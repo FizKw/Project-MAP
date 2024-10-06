@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ProjekMAP</string>
+    <string name="login_button">Sign In</string>
+    <string name="register_button">Register</string>
+    <string name="hello_blank_fragment">Ini Homepage</string>
+    <string name="email_input_message">Email</string>
+    <string name="password_input_message">Password</string>
+</resources>
