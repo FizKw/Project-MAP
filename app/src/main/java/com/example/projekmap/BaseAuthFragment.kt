@@ -1,4 +1,4 @@
-package com.example.lab_week_05
+package com.example.projekmap
 
 import android.os.Bundle
 import android.view.View
