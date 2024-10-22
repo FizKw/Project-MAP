@@ -75,15 +75,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Description -->
-
-    <!-- Detail information (Rating, Type, Estimate, Via) -->
-
-    <!-- Experience title -->
-
-    <!-- See all experiences -->
-
-    <!-- Experience RecyclerView -->
 
     <TextView
         android:id="@+id/place_description"

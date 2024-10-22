@@ -8,16 +8,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-
 class HomePageFragment : BaseAuthFragment() {
 
     private lateinit var popularNearbyRecyclerView: RecyclerView
     private lateinit var recommendedRecyclerView: RecyclerView
     private lateinit var nearestLocationRecyclerView: RecyclerView
+    private lateinit var chooseLocationRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -31,11 +30,13 @@ class HomePageFragment : BaseAuthFragment() {
         popularNearbyRecyclerView = view.findViewById(R.id.popularNearbyRecyclerView)
         recommendedRecyclerView = view.findViewById(R.id.recommendedRecyclerView)
         nearestLocationRecyclerView = view.findViewById(R.id.nearestLocationRecyclerView)
+        chooseLocationRecyclerView = view.findViewById(R.id.chooseLocationRecyclerView) // Add Choose Location RecyclerView
 
         // Setup RecyclerView
         setupPopularNearbyRecyclerView()
         setupRecommendedRecyclerView()
         setupNearestLocationRecyclerView()
+        setupChooseLocationRecyclerView() // Add setup for Choose Location
 
         return view
     }
@@ -85,6 +86,21 @@ class HomePageFragment : BaseAuthFragment() {
         nearestLocationRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         nearestLocationRecyclerView.adapter = adapter
+    }
+
+    // Setup for Choose Location RecyclerView
+    private fun setupChooseLocationRecyclerView() {
+        // Dummy data for Choose Location
+        val locations = listOf(
+            Place("Central Java", "Yogyakarta, Indonesia", 0.0, R.drawable.central_java, "Explore cultural heritage in Central Java."),
+            Place("Yogyakarta", "Yogyakarta, Indonesia", 0.0, R.drawable.yogyakarta, "Discover the beauty of Yogyakarta.")
+        )
+
+        // Setup RecyclerView
+        val adapter = ChooseLocationAdapter(locations)
+        chooseLocationRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        chooseLocationRecyclerView.adapter = adapter
     }
 
     companion object {

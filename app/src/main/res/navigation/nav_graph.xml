@@ -5,32 +5,71 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homePageFragment">
 
+    <!-- Home Fragment -->
     <fragment
         android:id="@+id/homePageFragment"
         android:name="com.example.projekmap.HomePageFragment"
-        android:label="fragment_home_page"
-        tools:layout="@layout/fragment_home_page" />
+        android:label="Home Page"
+        tools:layout="@layout/fragment_home_page">
+        <!-- Action to navigate to Wishlist Fragment -->
+        <action
+            android:id="@+id/action_homePageFragment_to_wishlistFragment"
+            app:destination="@id/wishlistFragment" />
 
+        <!-- Action to navigate to Notification Fragment -->
+        <action
+            android:id="@+id/action_homePageFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
+
+        <!-- Action to navigate to Profile Fragment -->
+        <action
+            android:id="@+id/action_homePageFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+    <!-- Login Fragment -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.projekmap.LoginFragment"
-        android:label="fragment_login"
+        android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_homePageFragment"
             app:destination="@id/homePageFragment"
             app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
+    <!-- Register Fragment -->
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.projekmap.RegisterFragment"
-        android:label="fragment_register"
+        android:label="Register"
         tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_login_to_register"
             app:destination="@id/registerFragment" />
     </fragment>
+
+    <!-- Wishlist Fragment -->
+    <fragment
+        android:id="@+id/wishlistFragment"
+        android:name="com.example.projekmap.WishlistFragment"
+        android:label="Wishlist"
+        tools:layout="@layout/fragment_wishlist" />
+
+    <!-- Notification Fragment -->
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.projekmap.NotificationFragment"
+        android:label="Notification"
+        tools:layout="@layout/fragment_notification" />
+
+    <!-- Profile Fragment -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.projekmap.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>
