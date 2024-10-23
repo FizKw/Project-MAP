@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         // Link BottomNavigationView with NavController
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
     }
 
