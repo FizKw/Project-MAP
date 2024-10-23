@@ -16,23 +16,20 @@ class ChooseLocationAdapter(private val items: List<Place>) : RecyclerView.Adapt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_choose_location, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_choose_location, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val location = items[position]
-        holder.image.setImageResource(location.imageRes)
-        holder.name.text = location.name
+        val place = items[position]
+        holder.image.setImageResource(place.imageRes)
+        holder.name.text = place.name
 
-        // Aksi klik untuk membuka detail tempat
+        // Klik item untuk membuka PlaceListActivity
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
-            val intent = Intent(context, LocationDetailActivity::class.java).apply {
-                putExtra("LOCATION_NAME", location.name)
-                putExtra("LOCATION_IMAGE", location.imageRes)
-                putExtra("LOCATION_DESCRIPTION", location.description)
+            val intent = Intent(context, PlaceListActivity::class.java).apply {
+                putExtra("REGION", place.name) // Kirim data wilayah (Central Java / Yogyakarta)
             }
             context.startActivity(intent)
         }
@@ -42,3 +39,5 @@ class ChooseLocationAdapter(private val items: List<Place>) : RecyclerView.Adapt
         return items.size
     }
 }
+
+
