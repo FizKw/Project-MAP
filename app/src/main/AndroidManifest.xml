@@ -32,6 +32,8 @@
         </activity>
 
         <activity android:name=".PlaceDetailActivity" />
+        <activity android:name=".PlaceListActivity" />
+
 
     </application>
 
