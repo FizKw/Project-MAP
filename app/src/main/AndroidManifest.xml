@@ -13,6 +13,9 @@
         android:theme="@style/Theme.ProjekMAP"
         tools:targetApi="31">
         <activity
+            android:name=".ArticleDetailFragment"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -21,9 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".PlaceDetailActivity" />
-
+        <activity android:name=".WishlistDetailActivity" />
     </application>
 
 </manifest>
