@@ -4,6 +4,7 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.health.connect.datatypes.ExerciseRoute
 import android.location.Address
@@ -192,26 +193,11 @@ class HomePageFragment : BaseAuthFragment() {
     // Setup for Article RecyclerView
     private fun setupArticleRecyclerView() {
         val articles = listOf(
-            Article("Discover Yogyakarta", "Jan 2023", R.drawable.yogyakarta),
-            Article("Cultural Gems of Central Java", "Feb 2023", R.drawable.central_java)
+            Article("Discover Yogyakarta", "lorep ipsum", "Jan 2023" , R.drawable.yogyakarta),
+            Article("Cultural Gems of Central Java", "lorep ipsum", "Feb 2023", R.drawable.central_java)
         )
 
-        // Set adapter dengan listener untuk navigasi ke fragment detail
-        val adapter = ArticleAdapter(articles) { article ->
-            // Ketika artikel diklik, navigasi ke ArticleDetailFragment
-            val articleFragment = ArticleFragment.newInstance(
-                article.title,
-                article.date,
-                article.imageResId
-            )
-
-            // Lakukan fragment transaction untuk mengganti fragment saat ini dengan ArticleDetailFragment
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, articleDetailFragment) // Pastikan Anda mengganti R.id.fragment_container dengan ID dari container di activity
-                .addToBackStack(null) // Menambahkan fragment ke backstack agar user bisa kembali
-                .commit()
-        }
-
+        val adapter = ArticleAdapter(articles)
         articleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         articleRecyclerView.adapter = adapter
     }
