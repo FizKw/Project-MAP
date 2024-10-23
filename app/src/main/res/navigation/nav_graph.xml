@@ -71,5 +71,10 @@
         android:name="com.example.projekmap.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/updateProfileFragment"
+        android:name="com.example.projekmap.UpdateProfileFragment"
+        android:label="Update Profile"
+        tools:layout="@layout/fragment_update_profile" />
 
 </navigation>
