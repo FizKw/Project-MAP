@@ -8,21 +8,27 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var bottomNavigationView: BottomNavigationView
+    lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Find the nav host fragment and setup navigation controller
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-
-        // Link BottomNavigationView with NavController
-        bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.onboardingFragment, R.id.onboardingFragment1, R.id.onboardingFragment2,
+                R.id.loginFragment, R.id.registerFragment -> hideBottomNavbar()
+                else -> showBottomNavbar()
+            }
+        }
     }
 
+    // Ubah visibilitas dari private menjadi public atau default
     fun hideBottomNavbar() {
         bottomNavigationView.visibility = View.GONE
     }
@@ -31,3 +37,4 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.visibility = View.VISIBLE
     }
 }
+
