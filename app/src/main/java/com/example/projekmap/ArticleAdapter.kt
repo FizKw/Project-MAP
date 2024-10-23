@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.ai.client.generativeai.type.content
 
 data class Article(
     val title: String,  // Judul artikel
