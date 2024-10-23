@@ -22,6 +22,9 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
+            android:name=".ArticleDetailFragment"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -30,11 +33,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".PlaceDetailActivity" />
+        <activity android:name=".WishlistDetailActivity" />
         <activity android:name=".PlaceListActivity" />
-
-
     </application>
 
 </manifest>
