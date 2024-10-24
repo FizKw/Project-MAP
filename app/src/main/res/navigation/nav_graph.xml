@@ -94,7 +94,11 @@
         android:id="@+id/wishlistFragment"
         android:name="com.example.projekmap.WishlistFragment"
         android:label="Wishlist"
-        tools:layout="@layout/fragment_wishlist" />
+        tools:layout="@layout/fragment_wishlist" >
+        <action
+            android:id="@+id/action_wishlistFragment_to_homePageFragment"
+            app:destination="@id/homePageFragment" />
+    </fragment>
 
     <!-- Notification Fragment -->
     <fragment

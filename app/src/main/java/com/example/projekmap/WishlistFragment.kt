@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.cardview.widget.CardView
+import androidx.navigation.fragment.findNavController
 
 class WishlistFragment : Fragment() {
 
@@ -36,5 +38,13 @@ class WishlistFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view.findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            findNavController().navigate(R.id.action_wishlistFragment_to_homePageFragment)
+        }
     }
 }
