@@ -1,5 +1,6 @@
 package com.example.projekmap
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-
 
 class OnboardingFragment2 : Fragment() {
 
@@ -21,7 +21,11 @@ class OnboardingFragment2 : Fragment() {
         // Set up the button click listener
         val nextButton: Button = view.findViewById(R.id.onboardingNextButton)
         nextButton.setOnClickListener {
-            // Navigate to the next onboarding fragment
+            // Save onboarding completion status in SharedPreferences
+            val sharedPref = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+            sharedPref.edit().putBoolean("isOnboardingCompleted", true).apply()
+
+            // Navigate to the login fragment
             findNavController().navigate(R.id.action_onboardingFragment2_to_loginFragment)
         }
 
