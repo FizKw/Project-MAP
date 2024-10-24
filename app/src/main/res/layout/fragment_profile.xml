@@ -128,26 +128,26 @@
         <!-- Update Profile Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/update_profile_button"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Update Profile"
-            android:textColor="#FFFFFF"
             android:padding="12dp"
-            android:layout_marginBottom="8dp"
-            app:cornerRadius="8dp"
-            android:backgroundTint="#6246EA"/>
+            android:textSize="18sp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/aquamarine"
+            android:text="@string/update_profile"/>
 
         <!-- Logout Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/logout_button"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Logout"
-            android:textColor="#FFFFFF"
             android:padding="12dp"
-            app:cornerRadius="8dp"
-            android:backgroundTint="#6246EA"/>
-
+            android:textSize="18sp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/aquamarine"
+            android:text="@string/logout_button"/>
     </LinearLayout>
 
 </LinearLayout>

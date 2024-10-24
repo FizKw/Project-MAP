@@ -5,4 +5,7 @@
     <string name="hello_blank_fragment">Ini Homepage</string>
     <string name="email_input_message">Email</string>
     <string name="password_input_message">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="logout_button">Logout</string>
 </resources>

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
@@ -56,6 +57,9 @@ class RegisterFragment : Fragment() {
                         }
                     }
             }
+        }
+        view.findViewById<ImageView>(R.id.btn_back).setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
