@@ -16,22 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjekMAP"
         tools:targetApi="31">
-        <activity
-            android:name=".OnboardingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".OnboardingFragment2"
-            android:exported="false" />
-        <activity
-            android:name=".OnboardingFragment1"
-            android:exported="false" />
-        <activity
-            android:name=".OnboardingFragment"
-            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -45,6 +34,7 @@
         <activity android:name=".WishlistDetailActivity" />
         <activity android:name=".PlaceListActivity" />
         <activity android:name=".ArticleDetailActivity" />
+        <activity android:name=".OnboardingActivity" />
     </application>
 
 </manifest>
