@@ -66,32 +66,61 @@
                 android:hint="Search Wishlist"
                 android:layout_weight="1"
                 android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:background="@null"
                 android:inputType="text"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-    <!-- Filter Section -->
-
-    <!-- RecyclerView for Wishlist Items -->
-    <LinearLayout
-        android:id="@+id/filter_section"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_wishlist">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/wishlist">
+        <Button
+            android:id="@+id/filter_by_trip_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_background"
+            android:drawableEnd="@drawable/ic_arrow_down"
+            android:text="Type Trip"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:layout_editor_absoluteX="135dp"
+            tools:layout_editor_absoluteY="131dp"
+            tools:ignore="MissingConstraints" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/filter_by_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_background"
+            android:drawableEnd="@drawable/ic_arrow_down"
+            android:text="Price"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:layout_editor_absoluteX="282dp"
+            tools:layout_editor_absoluteY="131dp"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/filter_by_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_background"
+            android:drawableEnd="@drawable/ic_arrow_down"
+            android:text="Date"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="131dp"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wishlist"
@@ -104,33 +133,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filter_section"
         app:layout_constraintVertical_bias="0.853" />
-
-    <Button
-        android:id="@+id/filter_by_trip_type"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/rounded_background"
-        android:drawableEnd="@drawable/ic_arrow_down"
-        android:text="Type Trip"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:layout_editor_absoluteX="135dp"
-        tools:layout_editor_absoluteY="131dp" />
-
-    <Button
-        android:id="@+id/filter_by_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/rounded_background"
-        android:drawableEnd="@drawable/ic_arrow_down"
-        android:text="Date"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="131dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
