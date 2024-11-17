@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -33,8 +34,7 @@ class ProfileFragment : Fragment() {
         val emailView = view.findViewById<TextView>(R.id.email_view)
         val nameView = view.findViewById<TextView>(R.id.name_view)
         val phoneNumberView = view.findViewById<TextView>(R.id.phone_number_view)
-//        TODO Profile Picture
-//        val imageView = view.findViewById<ImageView>(R.id.image_view)
+        val imageView = view.findViewById<ShapeableImageView>(R.id.profile_image)
         val updateProfileButton = view.findViewById<Button>(R.id.update_profile_button)
         val logoutButton = view.findViewById<Button>(R.id.logout_button)
 
@@ -47,21 +47,18 @@ class ProfileFragment : Fragment() {
                     if (document != null && document.exists()) {
                         val name = document.getString("name")
                         val phoneNumber = document.getString("phone_number")
-//                        TODO Profile Picture
-//                        val profile_picture = document.getString("profile_picture")
+                        val profilePicture = document.getString("profile_picture")
 
                         if (name.isNullOrEmpty() || phoneNumber.isNullOrEmpty()) {
                             nameView.visibility = View.GONE
                             phoneNumberView.visibility = View.GONE
-//                            TODO Profile Picture
-//                            imageView.visibility = View.GONE
+                            imageView.visibility = View.GONE
                         } else {
                             nameView.text = name
                             phoneNumberView.text = phoneNumber
-//                            TODO Profile Picture
-//                            Glide.with(this)
-//                                .load(profile_picture)
-//                                .into(imageView)
+                            Glide.with(this)
+                                .load(profilePicture)
+                                .into(imageView)
                         }
                     }
                 }
