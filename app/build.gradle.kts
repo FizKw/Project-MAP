@@ -68,6 +68,7 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
     implementation ("com.google.android.material:material:1.5.0")
+    implementation ("com.firebase:geofire-android-common:3.2.0")
 }
 
 secrets {

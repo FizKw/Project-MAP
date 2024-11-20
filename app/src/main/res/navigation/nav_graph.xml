@@ -118,5 +118,10 @@
         android:name="com.example.projekmap.UpdateProfileFragment"
         android:label="Update Profile"
         tools:layout="@layout/fragment_update_profile" />
-
+<!--    Update Data Fragment-->
+    <fragment
+        android:id="@+id/edit_vendor_fragment"
+        android:name="com.example.projekmap.EditVendorFragment"
+        android:label="Update Vendor"
+        tools:layout="@layout/fragment_edit_vendor"/>
 </navigation>

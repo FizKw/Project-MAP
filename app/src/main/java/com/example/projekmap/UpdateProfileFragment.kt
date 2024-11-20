@@ -139,7 +139,6 @@ class UpdateProfileFragment : Fragment() {
                             }
 
                     }else {
-                        userData["profile_picture"] = ""
                         saveUserData(userData)
                     }
 
