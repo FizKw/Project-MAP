@@ -12,11 +12,14 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 
 class RegisterFragment : Fragment() {
 
     private lateinit var auth:FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +37,16 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val emailInput = view.findViewById<TextInputEditText>(R.id.email_input_field)
         val passwordInput = view.findViewById<TextInputEditText>(R.id.password_input_field)
+        val phoneInput = view.findViewById<TextInputEditText>(R.id.phone_input_field)
         auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
 
         val loginButton = view.findViewById<Button>(R.id.submit_button)
         loginButton.setOnClickListener{
             val email = emailInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
-            if(email.isEmpty()||password.isEmpty()){
+            val phone = phoneInput.text.toString().trim()
+            if(email.isEmpty()||password.isEmpty()||phone.isEmpty()){
                 Toast.makeText(requireContext(), "Email and Password are required",
                     Toast.LENGTH_SHORT).show()
             }else{
@@ -50,12 +56,30 @@ class RegisterFragment : Fragment() {
                     .addOnCompleteListener(requireActivity()){task->
                         if(task.isSuccessful){
                             Log.d("Register","RegisterWithEmail:success")
-                            findNavController().navigate(R.id.loginFragment)
+                            val user = auth.currentUser
+                            val userData = HashMap<String, String>()
+                            if (user != null) {
+                                userData["name"] = user.email.toString().substringBefore("@")
+                                userData["phone_number"] = phone
+                                userData["profile_picture"] =""
+                                userData["role"] = "user"
+
+                                db.collection("users").document(user.uid).set(userData, SetOptions.merge())
+                                    .addOnSuccessListener {
+                                        Toast.makeText(requireContext(), "Registered Succesfully", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(requireContext(), "Error updating information: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                findNavController().navigate(R.id.homePageFragment)
+                            }
+
                         }else{
                             Log.w("RegisterWithEmail:failure",task.exception)
                             Toast.makeText(requireContext(), "Register Failed ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
+
             }
         }
         view.findViewById<ImageView>(R.id.btn_back).setOnClickListener {
