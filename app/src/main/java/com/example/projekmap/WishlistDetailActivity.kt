@@ -48,12 +48,5 @@ class WishlistDetailActivity : AppCompatActivity() {
             )
         }
 
-        // Set adapter ke RecyclerView
-        recyclerView.adapter = WishlistAdapter(wishlistType, items)
-
-        val backButton = findViewById<ImageView>(R.id.back_button)
-        backButton.setOnClickListener {
-            onBackPressed()  // Kembali ke halaman sebelumnya (home)
-        }
     }
 }
