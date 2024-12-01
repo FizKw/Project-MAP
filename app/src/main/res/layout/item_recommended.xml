@@ -40,15 +40,6 @@
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
-            <!-- Kategori (misalnya Hiking, Travel) -->
-            <TextView
-                android:id="@+id/recommended_place_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Kategori"
-                android:textColor="@android:color/holo_blue_light"
-                android:textSize="12sp" />
-
             <!-- Lokasi tempat -->
             <TextView
                 android:id="@+id/recommended_place_location"
