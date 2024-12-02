@@ -1,5 +1,6 @@
 package com.example.projekmap
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +42,7 @@ class ProfileFragment : Fragment() {
         val phoneNumberView = view.findViewById<TextView>(R.id.phone_number_view)
         val imageView = view.findViewById<ShapeableImageView>(R.id.profile_image)
         val updateProfileButton = view.findViewById<Button>(R.id.update_profile_button)
-        val logoutButton = view.findViewById<Button>(R.id.logout_button)
+        val logoutButton = view.findViewById<MaterialButton>(R.id.logout_button)
         val updateVendorButton = view.findViewById<MaterialButton>(R.id.update_vendor_button)
         val updateAdminButton = view.findViewById<MaterialButton>(R.id.update_admin_button)
         updateAdminButton.visibility = View.GONE
@@ -67,9 +68,13 @@ class ProfileFragment : Fragment() {
                         } else {
                             nameView.text = name
                             phoneNumberView.text = phoneNumber
-                            Glide.with(this)
-                                .load(profilePicture)
-                                .into(imageView)
+                            if (profilePicture != null) {
+                                if (profilePicture.isNotEmpty()){
+                                    Glide.with(this)
+                                        .load(profilePicture)
+                                        .into(imageView)
+                                }
+                            }
                         }
                         if (role == "vendor"){
                             updateVendorButton.visibility = View.VISIBLE
@@ -98,6 +103,7 @@ class ProfileFragment : Fragment() {
             auth.signOut()
             (activity as MainActivity).hideBottomNavbar()
             findNavController().navigate(R.id.loginFragment)
+
         }
     }
 }

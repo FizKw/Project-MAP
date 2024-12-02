@@ -41,8 +41,8 @@ class RegisterFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        val loginButton = view.findViewById<Button>(R.id.submit_button)
-        loginButton.setOnClickListener{
+        val submitButton = view.findViewById<Button>(R.id.submit_button)
+        submitButton.setOnClickListener{
             val email = emailInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
             val phone = phoneInput.text.toString().trim()

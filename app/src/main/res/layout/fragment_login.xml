@@ -77,4 +77,14 @@
         android:textSize="18sp"
         android:layout_marginTop="4dp"
         android:backgroundTint="@color/green"/>
+
+<!--    ini butonSizsenya bisa diganti ganti standard ama wide-->
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/google_sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+
+        app:buttonSize="icon_only"/>
 </LinearLayout>
