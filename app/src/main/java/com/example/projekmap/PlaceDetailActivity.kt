@@ -1,9 +1,13 @@
 package com.example.projekmap
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 class PlaceDetailActivity : AppCompatActivity() {
@@ -54,5 +58,35 @@ class PlaceDetailActivity : AppCompatActivity() {
         } else {
             favoriteButton.setImageResource(R.drawable.ic_love) // Ikon love kosong
         }
+
+        // Handle tombol Rate This Place
+        val rateButton = findViewById<Button>(R.id.btn_rate)
+        rateButton.setOnClickListener {
+            showRatingDialog()
+        }
+    }
+
+    private fun showRatingDialog() {
+        // Inflate layout dialog_rate_place
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_rate_place, null)
+
+        // Buat AlertDialog
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        // Temukan RatingBar dan Button dari layout dialog
+        val ratingBar = dialogView.findViewById<RatingBar>(R.id.rating_bar)
+        val submitButton = dialogView.findViewById<Button>(R.id.btn_submit_rating)
+
+        // Handle klik tombol Submit
+        submitButton.setOnClickListener {
+            val rating = ratingBar.rating
+            Toast.makeText(this, "You rated $rating stars", Toast.LENGTH_SHORT).show()
+            dialog.dismiss() // Tutup dialog setelah submit
+        }
+
+        // Tampilkan dialog
+        dialog.show()
     }
 }
