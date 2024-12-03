@@ -35,7 +35,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".PlaceDetailActivity" />
-        <activity android:name=".WishlistDetailActivity" />
         <activity android:name=".PlaceListActivity" />
         <activity android:name=".ArticleDetailActivity" />
         <activity android:name=".OnboardingActivity" />

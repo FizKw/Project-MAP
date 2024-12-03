@@ -7,17 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class WishlistAdapter(private val wishlistType: String, private val items: List<WishlistItem>) :
+class WishlistAdapter(private val items: List<WishlistItem>) :
     RecyclerView.Adapter<WishlistAdapter.WishlistViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishlistViewHolder {
-        val layout = if (wishlistType == "hiking") {
-            R.layout.item_wishlist // Use hiking layout
-        } else {
-            R.layout.item_wishlist2 // Use travel layout
-        }
-
-        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_wishlist, parent, false)
         return WishlistViewHolder(view)
     }
 

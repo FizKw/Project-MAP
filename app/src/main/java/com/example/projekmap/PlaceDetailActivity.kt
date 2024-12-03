@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class PlaceDetailActivity : AppCompatActivity() {
 
+    private var isFavorite: Boolean = false // Menyimpan status favorit
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
@@ -30,10 +32,31 @@ class PlaceDetailActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.place_image).setImageResource(placeImageRes)
         findViewById<TextView>(R.id.place_rating).text = placeRating
 
-        // Handle back button
-        val backButton = findViewById<ImageView>(R.id.back_button)
+        val backButton: ImageView = findViewById(R.id.back_button)
+        val favoriteButton: ImageView = findViewById(R.id.favorite_button)
+
+        // Listener untuk tombol kembali
         backButton.setOnClickListener {
-            onBackPressed()  // Kembali ke halaman sebelumnya (home)
+            finish() // Kembali ke aktivitas sebelumnya
+        }
+
+        // Listener untuk tombol favorite
+        favoriteButton.setOnClickListener {
+            isFavorite = !isFavorite // Toggle status favorite
+            updateFavoriteIcon(favoriteButton) // Perbarui ikon love
+
+            // Tampilkan pesan kepada pengguna
+            val message = if (isFavorite) "Added to favorites" else "Removed from favorites"
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Fungsi untuk memperbarui ikon berdasarkan status favorite
+    private fun updateFavoriteIcon(favoriteButton: ImageView) {
+        if (isFavorite) {
+            favoriteButton.setImageResource(R.drawable.ic_lovefull) // Ikon love terisi
+        } else {
+            favoriteButton.setImageResource(R.drawable.ic_love) // Ikon love kosong
         }
 
         // Handle tombol Rate This Place

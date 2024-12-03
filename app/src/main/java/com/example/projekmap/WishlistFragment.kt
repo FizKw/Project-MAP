@@ -1,16 +1,19 @@
 package com.example.projekmap
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.cardview.widget.CardView
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class WishlistFragment : Fragment() {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var placeAdapter: PlaceAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,32 +22,43 @@ class WishlistFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_wishlist, container, false)
 
-        // Referensi ke CardView untuk hiking dan travel
-        val hikingCard = view.findViewById<CardView>(R.id.hikingWishlistCard)
-        val travelCard = view.findViewById<CardView>(R.id.travelWishlistCard)
+        // Initialize RecyclerView
+        recyclerView = view.findViewById(R.id.wishlist)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Listener untuk hiking
-        hikingCard?.setOnClickListener {
-            val intent = Intent(requireContext(), WishlistDetailActivity::class.java)
-            intent.putExtra("wishlist_type", "hiking")  // Kirim data tipe wishlist
-            startActivity(intent)
-        }
-
-        // Listener untuk travel
-        travelCard?.setOnClickListener {
-            val intent = Intent(requireContext(), WishlistDetailActivity::class.java)
-            intent.putExtra("wishlist_type", "travel")  // Kirim data tipe wishlist
-            startActivity(intent)
-        }
+        // Initialize PlaceAdapter
+        placeAdapter = PlaceAdapter(getSamplePlaces())
+        recyclerView.adapter = placeAdapter
 
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<ImageView>(R.id.backButton).setOnClickListener {
-            findNavController().navigate(R.id.action_wishlistFragment_to_homePageFragment)
-        }
+    // Provide sample data for testing
+    private fun getSamplePlaces(): List<Place> {
+        return listOf(
+            Place(
+                name = "Semeru Mountain",
+                location = "East Java, Indonesia",
+                description = "Semeru Mountain is The highest Volcano in Java.",
+                rating = 4.8,
+                imageRes = R.drawable.semeru
+            ),
+            Place(
+                name = "Borobudur",
+                location = "Jauh",
+                description = "A stunning natural wonder in Jawa, great for exploring and photography.",
+                rating = 4.9,
+                imageRes = R.drawable.borobudur
+            ),
+            Place(
+                name = "Malioboro",
+                location = "Jauh",
+                description = "A famous vacation in Jawa, a must-visit for sightseeing and romance.",
+                rating = 4.7,
+                imageRes = R.drawable.malioboro
+            )
+        )
     }
+
 }
