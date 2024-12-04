@@ -294,7 +294,7 @@
 
                 <!--Vendor validation-->
                 <TextView
-                    android:id="@+id/vendorTitle"
+                    android:id="@+id/vendorvalTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vendor Validation"
@@ -304,7 +304,7 @@
                     android:layout_marginTop="24dp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/vendorRecyclerView"
+                    android:id="@+id/vendorvalRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="372dp"
                     android:layout_marginTop="16dp"
@@ -312,13 +312,13 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/adminTitle"
+                    app:layout_constraintTop_toBottomOf="@id/vendorvalTitle"
                     app:layout_constraintVertical_bias="0.0"
                     tools:listitem="@layout/item_validasi_vendor" />
 
                 <!--Vendor List-->
                 <TextView
-                    android:id="@+id/adminTitle"
+                    android:id="@+id/vendorTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vendor List"
@@ -328,7 +328,7 @@
                     android:layout_marginTop="24dp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/adminRecyclerView"
+                    android:id="@+id/vendorRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="362dp"
                     android:layout_marginTop="16dp"
@@ -336,9 +336,9 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/adminTitle"
+                    app:layout_constraintTop_toBottomOf="@id/vendorTitle"
                     app:layout_constraintVertical_bias="0.0"
-                    tools:listitem="@layout/item_admin_menu" />
+                    tools:listitem="@layout/item_vendor_list" />
             </LinearLayout>
 
         </LinearLayout>
