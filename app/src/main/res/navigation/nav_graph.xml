@@ -131,9 +131,45 @@
         android:label="Pilih Onboarding"
         tools:layout="@layout/fragment_pilihan"/>
 
+    <!-- Action to navigate from Admin Page Fragment to Pilih Onboarding -->
     <fragment
         android:id="@+id/admin_page_fragment"
         android:name="com.example.projekmap.AdminPageFragment"
         android:label="Admin Page"
-        tools:layout="@layout/fragment_admin_page"/>
+        tools:layout="@layout/fragment_admin_page">
+        <action
+            android:id="@+id/action_admin_page_to_onboarding_edit"
+            app:destination="@id/onboarding_edit_fragment" />
+        <action
+            android:id="@+id/action_admin_page_to_recommend_edit"
+            app:destination="@id/recommend_edit_fragment" />
+        <action
+            android:id="@+id/action_admin_page_to_article_edit"
+            app:destination="@id/article_edit_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/onboarding_edit_fragment"
+        android:name="com.example.projekmap.OnboardingEditFragment"
+        android:label="Onboarding Edit"
+        tools:layout="@layout/fragment_onboarding_edit">
+    </fragment>
+
+    <fragment
+        android:id="@+id/recommend_edit_fragment"
+        android:name="com.example.projekmap.RecommendEditFragment"
+        android:label="Recommend Edit"
+        tools:layout="@layout/fragment_recommend_edit">
+    </fragment>
+
+    <fragment
+        android:id="@+id/article_edit_fragment"
+        android:name="com.example.projekmap.ArticleEditFragment"
+        android:label="Article Edit"
+        tools:layout="@layout/fragment_article_edit">
+        <argument
+            android:name="articleId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
