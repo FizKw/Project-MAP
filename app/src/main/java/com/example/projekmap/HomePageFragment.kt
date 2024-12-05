@@ -71,8 +71,6 @@ class HomePageFragment : BaseAuthFragment() {
         // Initialize RecyclerViews
         popularNearbyRecyclerView = view.findViewById(R.id.popularNearbyRecyclerView)
         recommendedRecyclerView = view.findViewById(R.id.recommendedRecyclerView)
-        nearestLocationRecyclerView = view.findViewById(R.id.nearestLocationRecyclerView)
-        chooseLocationRecyclerView = view.findViewById(R.id.chooseLocationRecyclerView)
         articleRecyclerView = view.findViewById(R.id.articleRecyclerView) // Initialize article RecyclerView
 
 
@@ -90,8 +88,6 @@ class HomePageFragment : BaseAuthFragment() {
         // Setup RecyclerView
         setupPopularNearbyRecyclerView()
         setupRecommendedRecyclerView()
-        setupNearestLocationRecyclerView()
-        setupChooseLocationRecyclerView()
         setupArticleRecyclerView()// Add setup for Choose Location
     }
 
@@ -168,26 +164,6 @@ class HomePageFragment : BaseAuthFragment() {
         val adapter = RecommendedAdapter(recommendedPlaces)
         recommendedRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recommendedRecyclerView.adapter = adapter
-    }
-
-    private fun setupNearestLocationRecyclerView() {
-        val nearestPlaces = listOf(
-            Place("Pramuka Island", "Thousand Island, Jakarta Kep", 4.5, R.drawable.pramuka_island, "Pramuka Island is famous for its pristine beaches."),
-            Place("Pari Island", "Thousand Island, Jakarta Kep", 4.3, R.drawable.pari_island, "Pari Island is a beautiful island with clear waters and great snorkeling spots.")
-        )
-        val adapter = NearestLocationAdapter(nearestPlaces)
-        nearestLocationRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        nearestLocationRecyclerView.adapter = adapter
-    }
-
-    private fun setupChooseLocationRecyclerView() {
-        val locations = listOf(
-            Place("Central Java", "Yogyakarta, Indonesia", 0.0, R.drawable.central_java, "Explore cultural heritage in Central Java."),
-            Place("Yogyakarta", "Yogyakarta, Indonesia", 0.0, R.drawable.yogyakarta, "Discover the beauty of Yogyakarta.")
-        )
-        val adapter = ChooseLocationAdapter(locations)
-        chooseLocationRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        chooseLocationRecyclerView.adapter = adapter
     }
 
     // Setup for Article RecyclerView
