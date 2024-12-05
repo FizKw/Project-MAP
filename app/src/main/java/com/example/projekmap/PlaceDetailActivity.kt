@@ -49,6 +49,12 @@ class PlaceDetailActivity : AppCompatActivity() {
             val message = if (isFavorite) "Added to favorites" else "Removed from favorites"
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
+
+        // Handle tombol Rate This Place
+        val rateButton = findViewById<Button>(R.id.btn_rate)
+        rateButton.setOnClickListener {
+            showRatingDialog()
+        }
     }
 
     // Fungsi untuk memperbarui ikon berdasarkan status favorite
@@ -59,11 +65,8 @@ class PlaceDetailActivity : AppCompatActivity() {
             favoriteButton.setImageResource(R.drawable.ic_love) // Ikon love kosong
         }
 
-        // Handle tombol Rate This Place
-        val rateButton = findViewById<Button>(R.id.btn_rate)
-        rateButton.setOnClickListener {
-            showRatingDialog()
-        }
+
+
     }
 
     private fun showRatingDialog() {
