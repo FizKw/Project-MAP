@@ -130,4 +130,10 @@
         android:name="com.example.projekmap.FragmentPilihan"
         android:label="Pilih Onboarding"
         tools:layout="@layout/fragment_pilihan"/>
+
+    <fragment
+        android:id="@+id/admin_page_fragment"
+        android:name="com.example.projekmap.AdminPageFragment"
+        android:label="Admin Page"
+        tools:layout="@layout/fragment_admin_page"/>
 </navigation>

@@ -2,6 +2,7 @@ package com.example.projekmap
 
 import android.location.Address
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,6 +40,10 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapSearchView: SearchView
     private var latLng: LatLng? = null
     private var geoHash: String? = null
+
+    private lateinit var profileImage: ShapeableImageView
+    private lateinit var imageUri: Uri
+    private var imageSelected = false
 
 
 

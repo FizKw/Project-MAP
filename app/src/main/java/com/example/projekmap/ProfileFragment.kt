@@ -95,6 +95,10 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.edit_vendor_fragment, bundle)
         }
 
+        updateAdminButton.setOnClickListener{
+            findNavController().navigate(R.id.admin_page_fragment,)
+        }
+
         updateProfileButton.setOnClickListener {
             findNavController().navigate(R.id.updateProfileFragment)
         }
