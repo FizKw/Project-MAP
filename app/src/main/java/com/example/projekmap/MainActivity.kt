@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.homePageFragment)
         } else if (isOnboardingCompleted) {
             // Onboarding is completed, navigate to login screen
-            navController.navigate(R.id.loginFragment)
+            navController.navigate(R.id.pilih_onboarding)
         } else {
             // Show onboarding if neither condition is met
             navController.navigate(R.id.onboardingFragment)

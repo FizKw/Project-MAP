@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjekMAP</string>
+    <string name="app_name">DestinaFind</string>
     <string name="login_button">Sign In</string>
     <string name="register_button">Register</string>
     <string name="hello_blank_fragment">Ini Homepage</string>
@@ -11,4 +11,11 @@
     <string name="update_admin">Update Admin</string>
     <string name="logout_button">Logout</string>
     <string name="next_button">Next</string>
+    <string name="image_preview">Image Preview</string>
+    <string name="edit_image">Edit Image</string>
+    <string name="title">Title</string>
+    <string name="enter_title">Enter title</string>
+    <string name="description">Description</string>
+    <string name="enter_description">Enter description</string>
+    <string name="save">Save</string>
 </resources>
