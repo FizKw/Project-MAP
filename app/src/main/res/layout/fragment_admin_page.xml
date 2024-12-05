@@ -22,16 +22,26 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Back button -->
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_back"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:contentDescription="Back Button" />
+
             <TextView
                 android:id="@+id/location_now_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Admin Menu"
+                android:textColor="@android:color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/black"/>
-
-        <!-- Onboarding Menu -->
+                android:layout_marginTop="20dp"/>
 
             <TextView
                 android:layout_width="wrap_content"

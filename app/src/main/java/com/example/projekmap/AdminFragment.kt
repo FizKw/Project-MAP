@@ -36,6 +36,11 @@ class AdminPageFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_admin_page, container, false)
 
+        // Back button logic
+        view.findViewById<View>(R.id.back_button).setOnClickListener {
+            findNavController().navigateUp() // Navigasi kembali ke fragment sebelumnya
+        }
+
         // Inisialisasi RecyclerView
         vendorListRecyclerView = view.findViewById(R.id.vendorRecyclerView)
         vendorValidationRecyclerView = view.findViewById(R.id.vendorvalRecyclerView)
