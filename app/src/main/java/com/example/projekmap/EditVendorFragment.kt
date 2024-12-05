@@ -1,8 +1,11 @@
 package com.example.projekmap
 
+import android.Manifest.permission.READ_MEDIA_IMAGES
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +15,10 @@ import android.widget.Button
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.firebase.geofire.GeoFireUtils
@@ -28,6 +35,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
 import java.io.IOException
 import java.util.UUID
 
@@ -38,14 +46,26 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
     private lateinit var geocoder: Geocoder
     private lateinit var locationText: TextView
     private lateinit var mapSearchView: SearchView
+    private lateinit var storage: FirebaseStorage
     private var latLng: LatLng? = null
     private var geoHash: String? = null
+    private var latlngselected = false
 
-    private lateinit var profileImage: ShapeableImageView
+    private lateinit var vendorImage: ShapeableImageView
     private lateinit var imageUri: Uri
     private var imageSelected = false
 
-
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){
+            uri ->
+        if (uri != null){
+            imageUri = uri
+            vendorImage.setImageURI(imageUri)
+            imageSelected = true
+            Toast.makeText(requireContext(), "Image Selected", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "No Image Selected", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +82,9 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        storage = FirebaseStorage.getInstance()
+
+        vendorImage = view.findViewById<ShapeableImageView>(R.id.vendor_image)
         val vendorInputField = view.findViewById<TextInputEditText>(R.id.vendor_input_field)
         val placeInputField = view.findViewById<TextInputEditText>(R.id.place_input_field)
         val typeInputField = view.findViewById<TextInputEditText>(R.id.type_input_field)
@@ -74,6 +97,18 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
         val longView = view.findViewById<TextView>(R.id.longitude_view)
         val db = FirebaseFirestore.getInstance()
 
+        vendorImage.setOnClickListener{
+            if (
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                ContextCompat.checkSelfPermission(requireContext(), READ_MEDIA_IMAGES) != PERMISSION_GRANTED
+            )
+            {
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(READ_MEDIA_IMAGES), 1011)
+            } else {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+        }
+
 
 
         val userId = arguments?.getString("uid")
@@ -83,6 +118,7 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
                         val vendor = document.getString("vendor")
+                        val vendorPicture = document.getString("vendor_image")
                         val place = document.getString("place")
                         val type = document.getString("type")
                         val estimate = document.getString("estimate")
@@ -102,7 +138,15 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
                         latView.text = lat
                         longView.text = long
 
+                        Glide.with(this)
+                            .load(vendorPicture)
+                            .into(vendorImage)
+
                         latLng = LatLng(document.getGeoPoint("lat_long")!!.latitude, document.getGeoPoint("lat_long")!!.longitude)
+                        latlngselected = true
+                    }
+                    else{
+                        Toast.makeText(requireContext(), "No data found", Toast.LENGTH_SHORT).show()
                     }
                 }
                 .addOnFailureListener {
@@ -139,33 +183,47 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
             val lat = latView.text.toString().trim()
             val long = longView.text.toString().trim()
 
-            if(userId.isNullOrEmpty()||vendor.isEmpty()||place.isEmpty()||type.isEmpty()||estimate.isEmpty()||via.isEmpty()||desc.isEmpty()||lat.isEmpty()||long.isEmpty()){
+            if(userId.isNullOrEmpty()||vendor.isEmpty()||place.isEmpty()||type.isEmpty()||estimate.isEmpty()||via.isEmpty()||desc.isEmpty()||lat.isEmpty()||long.isEmpty() || !latlngselected ||!imageSelected){
                 Toast.makeText(requireContext(), "All fields are required", Toast.LENGTH_SHORT).show()
             }else{
 //                GeoPoint(latLng!!.latitude, latLng!!.longitude)\
+                val storageRef = storage.reference.child("vendor_images/${UUID.randomUUID()}.jpg")
                 geoHash = GeoFireUtils.getGeoHashForLocation(GeoLocation(latLng!!.latitude, latLng!!.longitude))
-                val data = hashMapOf(
-                    "vendor" to vendor,
-                    "place" to place,
-                    "type" to type,
-                    "estimate" to estimate,
-                    "via" to via,
-                    "desc" to desc,
-                    "lat" to lat,
-                    "long" to long,
-                    "lat_long" to GeoPoint(latLng!!.latitude, latLng!!.longitude),
-                    "geohash" to geoHash,
 
-                )
-
-                db.collection("vendors").document(userId).set(data)
+                storageRef.putFile(imageUri)
                     .addOnSuccessListener {
-                        Toast.makeText(requireContext(), "Data saved", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.profileFragment)
+                        storageRef.downloadUrl.addOnSuccessListener { uri ->
+                            val data = hashMapOf(
+                                "vendor" to vendor,
+                                "place" to place,
+                                "type" to type,
+                                "estimate" to estimate,
+                                "via" to via,
+                                "desc" to desc,
+                                "lat" to lat,
+                                "long" to long,
+                                "lat_long" to GeoPoint(latLng!!.latitude, latLng!!.longitude),
+                                "geohash" to geoHash,
+                                "vendor_image" to uri.toString()
+
+                            )
+                            db.collection("vendors").document(userId).set(data)
+                                .addOnSuccessListener {
+                                    Toast.makeText(requireContext(), "Data saved", Toast.LENGTH_SHORT).show()
+                                    findNavController().navigate(R.id.profileFragment)
+                                }
+                                .addOnFailureListener {
+                                    Toast.makeText(requireContext(), "Data not saved", Toast.LENGTH_SHORT).show()
+                                }
+                        }
                     }
-                    .addOnFailureListener {
-                        Toast.makeText(requireContext(), "Data not saved", Toast.LENGTH_SHORT).show()
+                    .addOnFailureListener{
+                        Toast.makeText(requireContext(), "Image not uploaded", Toast.LENGTH_SHORT).show()
                     }
+
+
+
+
             }
         }
 
@@ -222,6 +280,7 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
                             mapSearchView.visibility = View.GONE
                             selectLocationButton.visibility = View.GONE
                             childFragmentManager.beginTransaction().hide(mapFragment).commit()
+                            latlngselected = true
                         }
                     }
                     else{
