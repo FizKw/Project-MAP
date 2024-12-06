@@ -1,9 +1,15 @@
 package com.example.projekmap
 
+import java.util.UUID
+
 data class Place(
-    val name: String,
-    val location: String,
-    val rating: Double,
-    val imageRes: Int,
-    val description: String // Deskripsi tempat
+    val id: String,
+    val vendor: String,
+    val place: String,
+    val avgRating: Double,
+    val vendorImage: String,
+    val desc: String, // Deskripsi tempat
+    val estimate: String,
+    val type: String,
+    val via: String,
 )

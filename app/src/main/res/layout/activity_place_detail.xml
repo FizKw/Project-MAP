@@ -169,9 +169,10 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/place_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Open Trip"
+                android:text="Type Trip"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -193,9 +194,10 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/place_estimate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3D 2N"
+                android:text="XD XN"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -217,9 +219,10 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/place_via"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ranupane"
+                android:text="XXX"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
         </LinearLayout>

@@ -28,6 +28,6 @@ open class BaseAuthFragment: Fragment(){
     }
 
     private fun redirectToLogin(){
-        findNavController().navigate(R.id.pilih_onboarding)
+        findNavController().navigate(R.id.loginFragment)
     }
 }

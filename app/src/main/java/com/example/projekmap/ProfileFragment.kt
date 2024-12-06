@@ -61,6 +61,7 @@ class ProfileFragment : Fragment() {
                         val phoneNumber = document.getString("phone_number")
                         val profilePicture = document.getString("profile_picture")
                         val role = document.getString("role")
+                        val status = document.getBoolean("status") ?: false
 
                         if (name.isNullOrEmpty() || phoneNumber.isNullOrEmpty()) {
                             nameView.visibility = View.GONE
@@ -76,10 +77,9 @@ class ProfileFragment : Fragment() {
                                 }
                             }
                         }
-                        if (role == "vendor"){
+                        if (role == "vendor" && status){
                             updateVendorButton.visibility = View.VISIBLE
                         } else if(role == "admin"){
-                            updateVendorButton.visibility = View.VISIBLE
                             updateAdminButton.visibility = View.VISIBLE
                         }
                     }
@@ -93,6 +93,11 @@ class ProfileFragment : Fragment() {
             val bundle = Bundle()
             bundle.putString("uid", auth.uid.toString())
             findNavController().navigate(R.id.edit_vendor_fragment, bundle)
+        }
+
+        updateAdminButton.setOnClickListener{
+            (activity as MainActivity).hideBottomNavbar()
+            findNavController().navigate(R.id.admin_page_fragment,)
         }
 
         updateProfileButton.setOnClickListener {

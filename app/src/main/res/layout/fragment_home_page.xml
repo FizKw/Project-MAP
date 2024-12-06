@@ -31,35 +31,28 @@
                 android:textStyle="bold"
                 android:textColor="@android:color/black"/>
 
-            <androidx.cardview.widget.CardView
+            <SearchView
+                android:id="@+id/search_here"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="10dp"
+                android:elevation="5dp"
+                android:queryHint="Search Here . . ."
+                android:iconifiedByDefault="false"
+                android:background="@drawable/bg_search_view"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_search"
-                        android:layout_gravity="center_vertical"/>
-
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="Cari lokasi..."
-                        android:background="@null"
-                        android:layout_marginStart="8dp"/>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_popular_nearby" />
 
             <TextView
                 android:layout_width="wrap_content"

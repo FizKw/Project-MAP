@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
@@ -38,6 +39,7 @@ class RegisterFragment : Fragment() {
         val emailInput = view.findViewById<TextInputEditText>(R.id.email_input_field)
         val passwordInput = view.findViewById<TextInputEditText>(R.id.password_input_field)
         val phoneInput = view.findViewById<TextInputEditText>(R.id.phone_input_field)
+        val registerAsVendorCheckbox = view.findViewById<CheckBox>(R.id.register_as_vendor_checkbox)
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
@@ -46,6 +48,7 @@ class RegisterFragment : Fragment() {
             val email = emailInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
             val phone = phoneInput.text.toString().trim()
+            val role = if(registerAsVendorCheckbox.isChecked) "vendor" else "user"
             if(email.isEmpty()||password.isEmpty()||phone.isEmpty()){
                 Toast.makeText(requireContext(), "Email and Password are required",
                     Toast.LENGTH_SHORT).show()
@@ -57,12 +60,14 @@ class RegisterFragment : Fragment() {
                         if(task.isSuccessful){
                             Log.d("Register","RegisterWithEmail:success")
                             val user = auth.currentUser
-                            val userData = HashMap<String, String>()
+                            val userData = HashMap<String, Any>()
                             if (user != null) {
                                 userData["name"] = user.email.toString().substringBefore("@")
                                 userData["phone_number"] = phone
                                 userData["profile_picture"] =""
-                                userData["role"] = "user"
+                                userData["role"] = role
+                                val status : Boolean = role != "vendor"
+                                userData["status"] = status
 
                                 db.collection("users").document(user.uid).set(userData, SetOptions.merge())
                                     .addOnSuccessListener {

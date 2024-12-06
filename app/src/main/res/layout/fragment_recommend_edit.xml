@@ -32,7 +32,7 @@
         tools:layout_editor_absoluteY="72dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecommendEditRecyclerview"
+        android:id="@+id/recommendEditRecyclerview"
         android:layout_width="358dp"
         android:layout_height="487dp"
         android:layout_marginBottom="104dp"
@@ -41,5 +41,15 @@
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/item_recommend_edit" />
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/save"
+        app:layout_constraintTop_toBottomOf="@id/recommendEditRecyclerview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.homePageFragment)
         } else if (isOnboardingCompleted) {
             // Onboarding is completed, navigate to login screen
-            navController.navigate(R.id.pilih_onboarding)
+            navController.navigate(R.id.loginFragment)
         } else {
             // Show onboarding if neither condition is met
             navController.navigate(R.id.onboardingFragment)
@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.onboardingFragment, R.id.onboardingFragment1, R.id.onboardingFragment2,
-                R.id.loginFragment, R.id.registerFragment -> hideBottomNavbar()
+                R.id.loginFragment, R.id.registerFragment, R.id.edit_vendor_fragment,
+                    R.id.onboarding_edit_fragment, R.id.article_edit_fragment-> hideBottomNavbar()
                 else -> showBottomNavbar()
             }
         }

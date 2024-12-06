@@ -3,37 +3,38 @@ package com.example.projekmap
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.health.connect.datatypes.ExerciseRoute
 import android.location.Address
 import android.location.Geocoder
-import android.location.Location
-import android.location.LocationManager
-import android.media.tv.AdRequest
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import java.io.IOException
+import java.util.ArrayList
 import java.util.Locale
+import java.util.UUID
 
 class HomePageFragment : BaseAuthFragment() {
 
@@ -42,11 +43,16 @@ class HomePageFragment : BaseAuthFragment() {
     private lateinit var nearestLocationRecyclerView: RecyclerView
     private lateinit var chooseLocationRecyclerView: RecyclerView
     private lateinit var articleRecyclerView: RecyclerView
+    private lateinit var searchRecycleView: RecyclerView
+    private lateinit var searchView: SearchView
     private lateinit var requestPermissionlauncher: ActivityResultLauncher<String>
     private lateinit var mMap: GoogleMap
 //    private lateinit var geocoder: Geocoder
     private lateinit var locationText: TextView
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
+    private lateinit var db : FirebaseFirestore
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,23 +78,22 @@ class HomePageFragment : BaseAuthFragment() {
         popularNearbyRecyclerView = view.findViewById(R.id.popularNearbyRecyclerView)
         recommendedRecyclerView = view.findViewById(R.id.recommendedRecyclerView)
         articleRecyclerView = view.findViewById(R.id.articleRecyclerView) // Initialize article RecyclerView
+        searchView = view.findViewById<SearchView>(R.id.search_here)
+        searchRecycleView = view.findViewById<RecyclerView>(R.id.searchRecyclerView)
+
+        if (hasLocationPermission()){
+            getLocation()
+
+        }else{
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION),
+                100
+            )
+            getLocation()
+        }
 
 
-    if (hasLocationPermission()){
-        getLocation()
-    }else{
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION),
-            100
-        )
-        getLocation()
-    }
-
-        // Setup RecyclerView
-        setupPopularNearbyRecyclerView()
-        setupRecommendedRecyclerView()
-        setupArticleRecyclerView()// Add setup for Choose Location
     }
 
 
@@ -121,6 +126,12 @@ class HomePageFragment : BaseAuthFragment() {
                         locationText.text = sb.toString()
 
                     }
+
+                    // Setup RecyclerView
+                    setupSearchView()
+                    setupPopularNearbyRecyclerView(latLng)
+                    setupRecommendedRecyclerView()
+                    setupArticleRecyclerView()// Add setup for Choose Location
                 }catch (e: IOException){
                     Log.e("Error", e.message.toString())
                     Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -141,41 +152,256 @@ class HomePageFragment : BaseAuthFragment() {
             .create().show()
     }
 
+    private fun setupSearchView() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!query.isNullOrEmpty()) {
+                    setupSearchRecyclerView(query)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    // Clear the RecyclerView and hide it if the query is empty
+                    searchRecycleView.adapter = null
+                    searchRecycleView.visibility = View.GONE
+                }
+                return true
+            }
+        })
+    }
+
+
 
     // Setup for Popular Nearby RecyclerView
+    private fun setupSearchRecyclerView(searchQuery: String) {
+        db = FirebaseFirestore.getInstance()
 
-    private fun setupPopularNearbyRecyclerView() {
-        val popularNearbyPlaces = listOf(
-            Place("Semeru Mountain", "East Java, Indonesia", 4.5, R.drawable.semeru, "Semeru Mountain is the highest volcano in Java."),
-            Place("Raja Ampat", "West Papua, Indonesia", 4.7, R.drawable.raja_ampat, "Raja Ampat is famous for its stunning marine biodiversity."),
-            Place("Bali Island", "Bali, Indonesia", 4.8, R.drawable.bali, "Bali is a popular tourist destination known for its beaches and temples.")
-        )
-        val adapter = PopularNearbyAdapter(popularNearbyPlaces)
-        popularNearbyRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        popularNearbyRecyclerView.adapter = adapter
+        val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
+
+        // Firestore query with SearchView input
+        val vendorQuery = db.collection("vendors")
+            .orderBy("vendor") // Ensure "vendor" field is indexed in Firestore
+            .startAt(searchQuery)
+            .endAt(searchQuery + "\uf8ff")
+            .limit(3)
+        tasks.add(vendorQuery.get())
+
+        // Query for matching place names
+        val placeQuery = db.collection("vendors")
+            .orderBy("place") // Ensure "place" field is indexed in Firestore
+            .startAt(searchQuery)
+            .endAt(searchQuery + "\uf8ff")
+            .limit(3)
+        tasks.add(placeQuery.get())
+
+        Tasks.whenAllComplete(tasks)
+            .addOnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.e("Error", "Error getting documents: ", task.exception)
+                    return@addOnCompleteListener
+                }
+
+                val matchingDocs: MutableList<Place> = ArrayList()
+                for (t in tasks) {
+                    val snap = t.result
+                    if (snap != null) {
+                        for (doc in snap.documents) {
+                            val place = Place(
+                                id = doc.id,
+                                vendor = doc.getString("vendor") ?: "Unknown Vendor",
+                                place = doc.getString("place") ?: "Unknown Place",
+                                avgRating = doc.getDouble("avg_rating") ?: 0.0,
+                                vendorImage = doc.getString("vendor_image") ?: "",
+                                desc = doc.getString("desc") ?: "Unknown Description",
+                                estimate = doc.getString("estimate") ?: "Unknown Estimate",
+                                type = doc.getString("type") ?: "Unknown Type",
+                                via = doc.getString("via") ?: "Unknown Via",
+                            )
+                            matchingDocs.add(place)
+                        }
+                    }
+                }
+
+                // Deduplicate and sort results if needed
+                val sortedDocs = matchingDocs.distinctBy { it.id }.sortedByDescending { it.avgRating }.take(5)
+
+                // Update the RecyclerView
+                val adapter = PopularNearbyAdapter(sortedDocs)
+                searchRecycleView.layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                searchRecycleView.adapter = adapter
+
+                // Show RecyclerView if results are found
+                searchRecycleView.visibility = if (sortedDocs.isNotEmpty()) View.VISIBLE else View.GONE
+            }
+            .addOnFailureListener {
+                Log.e("Error", "Error getting documents: ", it)
+                Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
     }
+
+
+    private fun setupPopularNearbyRecyclerView(latLng: LatLng) {
+        db = FirebaseFirestore.getInstance()
+
+        val center = GeoLocation(latLng.latitude, latLng.longitude)
+        val radiusInM = 50.0 * 1000.0
+
+        val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
+        val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
+
+        for (b in bounds) {
+            val q = db.collection("vendors")
+                .orderBy("geohash")
+                .startAt(b.startHash)
+                .endAt(b.endHash)
+                .limit(5)
+            tasks.add(q.get())
+        }
+
+        Tasks.whenAllComplete(tasks)
+            .addOnCompleteListener{ task ->
+                if (!task.isSuccessful){
+                    Log.e("Error", "Error getting documents: ", task.exception)
+                    return@addOnCompleteListener
+                }
+
+                val matchingDocs: MutableList<Place> = ArrayList()
+                for (t in tasks){
+                    val snap = t.result
+                    if (snap != null){
+                        for (doc in snap.documents){
+                            val lat = doc.getDouble("lat")!!
+                            val lng = doc.getDouble("long")!!
+
+                            val docLocation = GeoLocation(lat, lng)
+                            val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center)
+                            if (distanceInM <= radiusInM){
+                                val place = Place(
+                                    id = doc.id,
+                                    vendor = doc.getString("vendor")?: "Unknown Vendor",
+                                    place = doc.getString("place")?: "Unknown Place",
+                                    avgRating = doc.getDouble("avg_rating")?: 0.0,
+                                    vendorImage = doc.getString("vendor_image")?: "",
+                                    desc = doc.getString("desc")?: "Unknwon Description",
+                                    estimate = doc.getString("estimate")?: "Unknown Estimate",
+                                    type = doc.getString("type")?: "Unknown Type",
+                                    via = doc.getString("via")?: "Unknown Via",
+                                )
+                                matchingDocs.add(place)
+//                                Toast.makeText(requireContext(), "Success ${doc.getString("vendor")}", Toast.LENGTH_SHORT).show()
+                            }
+
+                        }
+                    }
+                }
+                val uniqueDocs = matchingDocs.distinctBy { it.id }.sortedByDescending { it.avgRating }.take(3)
+
+
+                val adapter = PopularNearbyAdapter(uniqueDocs)
+                popularNearbyRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                popularNearbyRecyclerView.adapter = adapter
+            }
+            .addOnFailureListener {
+                Log.e("Error", "Error getting documents: ", it)
+                Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
+
+
+    }
+
+
 
     private fun setupRecommendedRecyclerView() {
-        val recommendedPlaces = listOf(
-            Place("Kelimutu Mountain", "Flores, NTT", 4.3, R.drawable.kelimutu, "Kelimutu is famous for its three colored lakes."),
-            Place("Karimun Jawa Island", "Jepara, Central Java", 4.6, R.drawable.karimunjawa, "Karimunjawa is a tropical paradise with clear water."),
-            Place("Pahawang Island", "Lampung, Indonesia", 4.5, R.drawable.pahawang, "Pahawang is a hidden gem with pristine beaches.")
-        )
-        val adapter = RecommendedAdapter(recommendedPlaces)
-        recommendedRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recommendedRecyclerView.adapter = adapter
+        val recommendedPlaces = mutableListOf<Place>()
+        val recommendedCollection = db.collection("recommend")
+
+        recommendedPlaces.clear()
+
+        // Fetch recommendations from the 'recommend' collection
+        recommendedCollection.get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot != null && !snapshot.isEmpty) {
+                    val placeIds = snapshot.documents.mapNotNull { it.getString("vendorId") }
+
+                    // Fetch place details for the recommended vendor IDs
+                    placeIds.forEach { placeId ->
+                        db.collection("vendors").document(placeId).get()
+                            .addOnSuccessListener { document ->
+                                if (document != null && document.exists()) {
+                                    val place = Place(
+                                        id = document.id,
+                                        vendor = document.getString("vendor") ?: "Unknown Vendor",
+                                        place = document.getString("place") ?: "Unknown Place",
+                                        desc = document.getString("desc") ?: "No Description",
+                                        avgRating = document.getDouble("avg_rating") ?: 0.0,
+                                        vendorImage = document.getString("vendor_image") ?: "",
+                                        estimate = document.getString("estimate") ?: "",
+                                        type = document.getString("type") ?: "",
+                                        via = document.getString("via") ?: ""
+                                    )
+                                    recommendedPlaces.add(place)
+
+                                    // Notify the adapter after adding each place
+                                    val adapter = RecommendedAdapter(recommendedPlaces)
+                                    recommendedRecyclerView.layoutManager = LinearLayoutManager(
+                                        requireContext(),
+                                        LinearLayoutManager.VERTICAL,
+                                        false
+                                    )
+                                    recommendedRecyclerView.adapter = adapter
+                                }
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(requireContext(), "Failed to fetch vendor details", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "No recommendations found.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Failed to fetch recommendations.", Toast.LENGTH_SHORT).show()
+            }
     }
+
+
 
     // Setup for Article RecyclerView
     private fun setupArticleRecyclerView() {
-        val articles = listOf(
-            Article("Discover Yogyakarta", "lorep ipsum", "Jan 2023" , R.drawable.yogyakarta),
-            Article("Cultural Gems of Central Java", "lorep ipsum", "Feb 2023", R.drawable.central_java)
-        )
 
-        val adapter = ArticleAdapter(articles)
-        articleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        articleRecyclerView.adapter = adapter
+        db = FirebaseFirestore.getInstance()
+        val articleCollection = db.collection("article")
+        val articles = mutableListOf<Article>()
+
+        val documentIds = listOf("article1", "article2", "article3")
+        documentIds.forEach { documentId ->
+            articleCollection.document(documentId).get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val title = document.getString("title")
+                        val description = document.getString("description")
+                        val imageRes = document.getString("imageUrl")
+                        if (title != null && description != null && imageRes != null) {
+                            articles.add(Article(title, description, imageRes))
+
+                            if (articles.size == documentIds.size) {
+                                // Initialize RecyclerView
+                                val adapter = ArticleAdapter(articles)
+                                articleRecyclerView.layoutManager =
+                                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                                articleRecyclerView.adapter = adapter
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    Log.e("Error", "Error getting documents: ", it)
+                    Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
 }
