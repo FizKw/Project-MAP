@@ -1,5 +1,7 @@
 package com.example.projekmap
 
 data class Recommend(
-    var isChecked: String = false.toString()
+    val id: String,
+    val vendor: String,
+    val place: String,
 )

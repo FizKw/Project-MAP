@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class RecommendedAdapter(private val items: List<Place>) : RecyclerView.Adapter<RecommendedAdapter.ViewHolder>() {
 
@@ -28,7 +29,8 @@ class RecommendedAdapter(private val items: List<Place>) : RecyclerView.Adapter<
         val place = items[position]
 
         // Set data ke views yang ada di layout
-        holder.image.setImageResource(R.drawable.raja_ampat)
+        Glide.with(holder.itemView.context).load(place.vendorImage).into(holder.image)
+//        holder.image.setImageResource(R.drawable.raja_ampat)
         holder.placeName.text = place.vendor
         holder.placeLocation.text = place.place
         holder.placeRating.text = place.avgRating.toString()
@@ -37,11 +39,15 @@ class RecommendedAdapter(private val items: List<Place>) : RecyclerView.Adapter<
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, PlaceDetailActivity::class.java).apply {
+                putExtra("PLACE_ID", place.id)
                 putExtra("PLACE_NAME", place.vendor)
                 putExtra("PLACE_LOCATION", place.place)
-                putExtra("PLACE_RATING", place.avgRating.toString())
-                putExtra("PLACE_IMAGE", R.drawable.raja_ampat)
                 putExtra("PLACE_DESCRIPTION", place.desc)
+                putExtra("PLACE_IMAGE", place.vendorImage)
+                putExtra("PLACE_RATING", place.avgRating.toString())
+                putExtra("PLACE_TYPE", place.type)
+                putExtra("PLACE_ESTIMATE", place.estimate)
+                putExtra("PLACE_VIA", place.via)
             }
             context.startActivity(intent)
         }

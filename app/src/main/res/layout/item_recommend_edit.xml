@@ -15,7 +15,15 @@
 
         <!-- Menu Title -->
         <TextView
-            android:id="@+id/vendor_title"
+            android:id="@+id/vendor_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vendor List"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/vendor_place"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Vendor List"

@@ -315,15 +315,59 @@ class HomePageFragment : BaseAuthFragment() {
 
 
     private fun setupRecommendedRecyclerView() {
-        val recommendedPlaces = listOf(
-            Place(UUID.randomUUID().toString(), "East Java, Indonesia", "loc 1", 4.5, "Semeru Mountain is the highest volcano in Java.", "desc", "est 1", "type 1", "via 1"),
-            Place(UUID.randomUUID().toString(), "West Papua, Indonesia", "loc 2", 4.7, "Raja Ampat is famous for its stunning marine biodiversity.", "desc2", "est 2", "type 2", "via 2"),
-            Place(UUID.randomUUID().toString(), "Bali, Indonesia", "loc 3", 4.7, "Bali is a popular tourist destination known for its beaches and temples.", "desc 3", "est 3", "type 3", "via 3")
-        )
-        val adapter = RecommendedAdapter(recommendedPlaces)
-        recommendedRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recommendedRecyclerView.adapter = adapter
+        val recommendedPlaces = mutableListOf<Place>()
+        val recommendedCollection = db.collection("recommend")
+
+        recommendedPlaces.clear()
+
+        // Fetch recommendations from the 'recommend' collection
+        recommendedCollection.get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot != null && !snapshot.isEmpty) {
+                    val placeIds = snapshot.documents.mapNotNull { it.getString("vendorId") }
+
+                    // Fetch place details for the recommended vendor IDs
+                    placeIds.forEach { placeId ->
+                        db.collection("vendors").document(placeId).get()
+                            .addOnSuccessListener { document ->
+                                if (document != null && document.exists()) {
+                                    val place = Place(
+                                        id = document.id,
+                                        vendor = document.getString("vendor") ?: "Unknown Vendor",
+                                        place = document.getString("place") ?: "Unknown Place",
+                                        desc = document.getString("desc") ?: "No Description",
+                                        avgRating = document.getDouble("avg_rating") ?: 0.0,
+                                        vendorImage = document.getString("vendor_image") ?: "",
+                                        estimate = document.getString("estimate") ?: "",
+                                        type = document.getString("type") ?: "",
+                                        via = document.getString("via") ?: ""
+                                    )
+                                    recommendedPlaces.add(place)
+
+                                    // Notify the adapter after adding each place
+                                    val adapter = RecommendedAdapter(recommendedPlaces)
+                                    recommendedRecyclerView.layoutManager = LinearLayoutManager(
+                                        requireContext(),
+                                        LinearLayoutManager.VERTICAL,
+                                        false
+                                    )
+                                    recommendedRecyclerView.adapter = adapter
+                                }
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(requireContext(), "Failed to fetch vendor details", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "No recommendations found.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Failed to fetch recommendations.", Toast.LENGTH_SHORT).show()
+            }
     }
+
+
 
     // Setup for Article RecyclerView
     private fun setupArticleRecyclerView() {
@@ -358,15 +402,6 @@ class HomePageFragment : BaseAuthFragment() {
                     Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
                 }
         }
-
-//        val articles = listOf(
-//            Article("Discover Yogyakarta", "lorep ipsum", "Jan 2023" , R.drawable.yogyakarta),
-//            Article("Cultural Gems of Central Java", "lorep ipsum", "Feb 2023", R.drawable.central_java)
-//        )
-
-//        val adapter = ArticleAdapter(articles)
-//        articleRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//        articleRecyclerView.adapter = adapter
     }
 
 }

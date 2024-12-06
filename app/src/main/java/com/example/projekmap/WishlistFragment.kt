@@ -98,45 +98,4 @@ class WishlistFragment : Fragment() {
         }
 
     }
-
-
-    // Provide sample data for testing
-    private fun getSamplePlaces(): List<Place> {
-        return listOf(
-            Place(
-                vendor = "Semeru Mountain",
-                place = "East Java, Indonesia",
-                desc = "Semeru Mountain is The highest Volcano in Java.",
-                avgRating = 4.8,
-                vendorImage = "R.drawable.semeru",
-                id = UUID.randomUUID().toString(),
-                estimate = "est1",
-                type = "type 1",
-                via = "via 1",
-            ),
-            Place(
-                vendor = "Borobudur",
-                place = "Jauh",
-                desc = "A stunning natural wonder in Jawa, great for exploring and photography.",
-                avgRating = 4.9,
-                vendorImage = "R.drawable.semeru",
-                id = UUID.randomUUID().toString(),
-                estimate = "est1",
-                type = "type 1",
-                via = "via 1",
-            ),
-            Place(
-                vendor = "Malioboro",
-                place = "Jauh",
-                desc = "A famous vacation in Jawa, a must-visit for sightseeing and romance.",
-                avgRating = 4.7,
-                vendorImage = "R.drawable.semeru",
-                id = UUID.randomUUID().toString(),
-                estimate = "est1",
-                type = "type 1",
-                via = "via 1",
-            )
-        )
-    }
-
 }

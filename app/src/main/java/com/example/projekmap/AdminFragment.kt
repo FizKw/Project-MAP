@@ -17,14 +17,8 @@ class AdminPageFragment : Fragment() {
 
     private lateinit var vendorListRecyclerView: RecyclerView
     private lateinit var vendorValidationRecyclerView: RecyclerView
-
-    private lateinit var vendorListAdapter: VendorListAdapter
-
     private lateinit var db: FirebaseFirestore
 
-
-
-    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,7 +51,7 @@ class AdminPageFragment : Fragment() {
 
         // Inisialisasi tombol Edit untuk Recommend
         view.findViewById<MaterialButton>(R.id.edit_recommended_button1).setOnClickListener {
-            findNavController().navigate(R.id.action_admin_page_to_recommend_edit)
+            findNavController().navigate(R.id.recommend_edit_fragment)
         }
 
         view.findViewById<MaterialButton>(R.id.edit_article_button1).setOnClickListener {
