@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.onboardingFragment, R.id.onboardingFragment1, R.id.onboardingFragment2,
                 R.id.loginFragment, R.id.registerFragment, R.id.edit_vendor_fragment,
-                    R.id.onboarding_edit_fragment, R.id.article_edit_fragment-> hideBottomNavbar()
+                    R.id.onboarding_edit_fragment, R.id.article_edit_fragment, R.id.recommend_edit_fragment-> hideBottomNavbar()
                 else -> showBottomNavbar()
             }
         }
