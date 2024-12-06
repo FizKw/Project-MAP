@@ -28,20 +28,20 @@ class RecommendedAdapter(private val items: List<Place>) : RecyclerView.Adapter<
         val place = items[position]
 
         // Set data ke views yang ada di layout
-        holder.image.setImageResource(place.imageRes)
-        holder.placeName.text = place.name
-        holder.placeLocation.text = place.location
-        holder.placeRating.text = place.rating.toString()
+        holder.image.setImageResource(R.drawable.raja_ampat)
+        holder.placeName.text = place.vendor
+        holder.placeLocation.text = place.place
+        holder.placeRating.text = place.avgRating.toString()
 
         // Aksi klik untuk membuka detail tempat
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, PlaceDetailActivity::class.java).apply {
-                putExtra("PLACE_NAME", place.name)
-                putExtra("PLACE_LOCATION", place.location)
-                putExtra("PLACE_RATING", place.rating.toString())
-                putExtra("PLACE_IMAGE", place.imageRes)
-                putExtra("PLACE_DESCRIPTION", place.description)
+                putExtra("PLACE_NAME", place.vendor)
+                putExtra("PLACE_LOCATION", place.place)
+                putExtra("PLACE_RATING", place.avgRating.toString())
+                putExtra("PLACE_IMAGE", R.drawable.raja_ampat)
+                putExtra("PLACE_DESCRIPTION", place.desc)
             }
             context.startActivity(intent)
         }

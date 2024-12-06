@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.firestore.FirebaseFirestore
 
 class AdminPageFragment : Fragment() {
 
@@ -17,24 +19,21 @@ class AdminPageFragment : Fragment() {
     private lateinit var vendorValidationRecyclerView: RecyclerView
 
     private lateinit var vendorListAdapter: VendorListAdapter
-    private lateinit var vendorValidationAdapter: VendorValidationAdapter
 
-    private val vendorList = listOf(
-        Vendor("Vendor 1"),
-        Vendor("Vendor 2")
-    )
+    private lateinit var db: FirebaseFirestore
 
-    private val vendorValidationList = listOf(
-        VendorValidation("Valid"),
-        VendorValidation("Invalid")
-    )
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_admin_page, container, false)
+        return inflater.inflate(R.layout.fragment_admin_page, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Back button logic
         view.findViewById<View>(R.id.back_button).setOnClickListener {
@@ -70,19 +69,10 @@ class AdminPageFragment : Fragment() {
         view.findViewById<MaterialButton>(R.id.edit_article_button3).setOnClickListener {
             navigateToArticleEdit("article3")
         }
+        setupVendorValidationRecycleView()
 
-        // Set layout manager untuk RecyclerView
-        vendorListRecyclerView.layoutManager = LinearLayoutManager(context)
-        vendorValidationRecyclerView.layoutManager = LinearLayoutManager(context)
+        setupVendorListRecycleView()
 
-        // Set adapter untuk Vendor List dan Vendor Validation
-        vendorListAdapter = VendorListAdapter(vendorList)
-        vendorValidationAdapter = VendorValidationAdapter(vendorValidationList)
-
-        vendorListRecyclerView.adapter = vendorListAdapter
-        vendorValidationRecyclerView.adapter = vendorValidationAdapter
-
-        return view
     }
 
     private fun navigateToOnboardingEdit(onboardingId: String) {
@@ -103,6 +93,67 @@ class AdminPageFragment : Fragment() {
             putString("articleId", articleId)
         }
         findNavController().navigate(R.id.article_edit_fragment, bundle)
+    }
+
+    private fun setupVendorValidationRecycleView(){
+        val db = FirebaseFirestore.getInstance()
+        val vendorValidationList = mutableListOf<VendorValidation>()
+
+        // Query users with the role "vendor"
+        db.collection("users")
+            .whereEqualTo("role", "vendor")
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot != null && !snapshot.isEmpty) {
+                    for (document in snapshot.documents) {
+                        val vendorValidation = VendorValidation(
+                            uid = document.id,
+                            vendor = document.getString("name") ?: "Unknown Vendor",
+                            status = document.getBoolean("status") ?: false
+                        )
+                        vendorValidationList.add(vendorValidation)
+                    }
+
+                    // Initialize RecyclerView
+                    val adapter = VendorValidationAdapter(vendorValidationList)
+                    vendorValidationRecyclerView.layoutManager =
+                        LinearLayoutManager(requireContext())
+                    vendorValidationRecyclerView.adapter = adapter
+                } else {
+                    Toast.makeText(requireContext(), "No vendors found.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Failed to fetch vendors: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun setupVendorListRecycleView(){
+        val db = FirebaseFirestore.getInstance()
+        val vendorList = mutableListOf<Vendor>()
+
+        db.collection("vendors").get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot != null && !snapshot.isEmpty) {
+                    for (document in snapshot.documents) {
+                        val vendor = Vendor(
+                            uid = document.id,
+                            vendor = document.getString("vendor") ?: "Unknown Vendor"
+                        )
+                        vendorList.add(vendor)
+                    }
+
+                    // Initialize RecyclerView
+                    val adapter = VendorListAdapter(vendorList)
+                    vendorListRecyclerView.layoutManager =
+                        LinearLayoutManager(requireContext())
+                    vendorListRecyclerView.adapter = adapter
+                } else {
+                    Toast.makeText(requireContext(), "No vendors found.", Toast.LENGTH_SHORT).show()
+                }
+            }.addOnFailureListener {
+                Toast.makeText(requireContext(), "Failed to fetch vendors: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
 

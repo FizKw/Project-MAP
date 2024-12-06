@@ -19,10 +19,21 @@
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="Back Button" />
 
+    <TextView
+        android:id="@+id/placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Article Edit"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- Image Preview -->
 
     <ImageView
-        android:id="@+id/ivImagePreview"
+        android:id="@+id/articleImagePreview"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:layout_marginTop="68dp"
@@ -41,9 +52,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/edit_image"
-        app:layout_constraintTop_toBottomOf="@id/ivImagePreview"
-        app:layout_constraintStart_toStartOf="@id/ivImagePreview"
-        app:layout_constraintEnd_toEndOf="@id/ivImagePreview" />
+        app:layout_constraintTop_toBottomOf="@id/articleImagePreview"
+        app:layout_constraintStart_toStartOf="@id/articleImagePreview"
+        app:layout_constraintEnd_toEndOf="@id/articleImagePreview" />
 
     <!-- Title Input -->
     <TextView

@@ -19,10 +19,22 @@
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="Back Button" />
 
+    <TextView
+        android:id="@+id/placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Onboarding Edit"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
     <!-- Image Preview -->
 
     <ImageView
-        android:id="@+id/ivImagePreview"
+        android:id="@+id/onboardingImagePreview"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:layout_marginTop="68dp"
@@ -41,9 +53,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/edit_image"
-        app:layout_constraintTop_toBottomOf="@id/ivImagePreview"
-        app:layout_constraintStart_toStartOf="@id/ivImagePreview"
-        app:layout_constraintEnd_toEndOf="@id/ivImagePreview" />
+        app:layout_constraintTop_toBottomOf="@id/onboardingImagePreview"
+        app:layout_constraintStart_toStartOf="@id/onboardingImagePreview"
+        app:layout_constraintEnd_toEndOf="@id/onboardingImagePreview" />
 
     <!-- Title Input -->
     <TextView
@@ -98,6 +110,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="30dp"
         android:text="@string/save"
         app:layout_constraintTop_toBottomOf="@id/etDescription"
         app:layout_constraintStart_toStartOf="parent"

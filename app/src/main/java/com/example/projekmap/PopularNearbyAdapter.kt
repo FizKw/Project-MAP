@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class PopularNearbyAdapter(private val items: List<Place>) : RecyclerView.Adapter<PopularNearbyAdapter.ViewHolder>() {
 
@@ -26,24 +27,28 @@ class PopularNearbyAdapter(private val items: List<Place>) : RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val place = items[position]
-        holder.image.setImageResource(place.imageRes)
-        holder.placeName.text = place.name
-        holder.placeLocation.text = place.location
-        holder.placeRating.text = place.rating.toString()
+        Glide.with(holder.itemView.context).load(place.vendorImage).into(holder.image)
+        holder.placeName.text = place.vendor
+        holder.placeLocation.text = place.place
+        holder.placeRating.text = place.avgRating.toString()
 
         // Set an onClickListener for each item to navigate to the PlaceDetailActivity
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, PlaceDetailActivity::class.java)
-            intent.putExtra("PLACE_NAME", place.name)
-            intent.putExtra("PLACE_LOCATION", place.location)
-            intent.putExtra("PLACE_RATING", place.rating.toString())
-            intent.putExtra("PLACE_IMAGE", place.imageRes)
-            intent.putExtra("PLACE_DESCRIPTION", place.description) // Mengirim deskripsi
+            intent.putExtra("PLACE_ID", place.id)
+            intent.putExtra("PLACE_NAME", place.vendor)
+            intent.putExtra("PLACE_LOCATION", place.place)
+            intent.putExtra("PLACE_RATING", place.avgRating.toString())
+            intent.putExtra("PLACE_IMAGE", place.vendorImage)
+            intent.putExtra("PLACE_DESCRIPTION", place.desc) // Mengirim deskripsi
+            intent.putExtra("PLACE_TYPE", place.type)
+            intent.putExtra("PLACE_ESTIMATE", place.estimate)
+            intent.putExtra("PLACE_VIA", place.via)
             holder.itemView.context.startActivity(intent)
         }
 
         // Debug log
-        Log.d("PopularNearbyAdapter", "Binding item: ${place.name} at position $position")
+        Log.d("PopularNearbyAdapter", "Binding item: ${place.vendor} at position $position")
     }
 
     override fun getItemCount(): Int {

@@ -1,5 +1,8 @@
 package com.example.projekmap
 
 data class VendorValidation(
-    val status: String
+    val uid: String,
+    val vendor: String,
+    val status: Boolean,
+
 )
