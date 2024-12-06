@@ -7,38 +7,39 @@
     tools:context=".EditVendorFragment"
     >
 
+<!-- ============================== Jangan DIILANGIN =============================-->
+<!--    <fragment-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:id="@+id/map_view"-->
+<!--        android:name="com.google.android.gms.maps.SupportMapFragment"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"/>-->
 
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map_view"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+<!--    <SearchView-->
+<!--        android:id="@+id/map_search_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:layout_margin="30dp"-->
+<!--        android:elevation="5dp"-->
+<!--        android:queryHint="Search ..."-->
+<!--        android:iconifiedByDefault="false"-->
+<!--        android:background="@drawable/bg_search_view"/>-->
 
-    <SearchView
-        android:id="@+id/map_search_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="30dp"
-        android:elevation="5dp"
-        android:queryHint="Search ..."
-        android:iconifiedByDefault="false"
-        android:background="@drawable/bg_search_view"/>
+<!--    <Button-->
 
-    <Button
-
-        android:text="Select Location"
-        android:id="@+id/select_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_search_view"
-        android:layout_margin="15dp"/>
+<!--        android:text="Select Location"-->
+<!--        android:id="@+id/select_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/map_search_view"-->
+<!--        android:layout_margin="15dp"/>-->
+<!-- ============================== Jangan DIILANGIN =============================-->
 
 
     <com.google.android.material.imageview.ShapeableImageView
