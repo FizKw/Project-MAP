@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -113,7 +114,11 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-
+        // Back button listener
+        val backButton: ImageView = view.findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
         val userId = arguments?.getString("uid")
 
@@ -163,17 +168,17 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
 
 
 
-        mapSearchView = view.findViewById(R.id.map_search_view)
-
-        val selectLocationButton = view.findViewById<Button>(R.id.select_button)
-
-        selectLocationButton.visibility = View.GONE
-        mapSearchView.visibility = View.GONE
-
-
-
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as SupportMapFragment
-        childFragmentManager.beginTransaction().hide(mapFragment).commit()
+//        mapSearchView = view.findViewById(R.id.map_search_view)
+//
+//        val selectLocationButton = view.findViewById<Button>(R.id.select_button)
+//
+//        selectLocationButton.visibility = View.GONE
+//        mapSearchView.visibility = View.GONE
+//
+//
+//
+//        val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as SupportMapFragment
+//        childFragmentManager.beginTransaction().hide(mapFragment).commit()
 
 
 
