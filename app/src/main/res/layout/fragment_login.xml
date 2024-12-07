@@ -9,6 +9,17 @@
     android:layout_marginTop="16dp"
     tools:context=".LoginFragment">
 
+    <ImageView
+        android:id="@+id/onboardingImage"
+        android:layout_width="380dp"
+        android:layout_height="300dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo_destinafind"
+        app:layout_constraintBottom_toTopOf="@id/onboardingTextLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_input_wrapper"
         android:layout_width="match_parent"
