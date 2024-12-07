@@ -98,11 +98,14 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
         val searchMapButton = view.findViewById<Button>(R.id.search_map_button)
 //
         val saveButton = view.findViewById<Button>(R.id.save_button)
+        val latTextView = view.findViewById<TextView>(R.id.latitude)
+        val longTextView = view.findViewById<TextView>(R.id.longitude)
         val latView = view.findViewById<TextView>(R.id.latitude_view)
         val longView = view.findViewById<TextView>(R.id.longitude_view)
         val db = FirebaseFirestore.getInstance()
+        val buttonSelectImage = view.findViewById<Button>(R.id.btnVendorImage)
 
-        vendorImage.setOnClickListener{
+        buttonSelectImage.setOnClickListener{
             if (
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                 ContextCompat.checkSelfPermission(requireContext(), READ_MEDIA_IMAGES) != PERMISSION_GRANTED
@@ -168,153 +171,156 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
 
 
 
-//        mapSearchView = view.findViewById(R.id.map_search_view)
-//
-//        val selectLocationButton = view.findViewById<Button>(R.id.select_button)
-//
-//        selectLocationButton.visibility = View.GONE
-//        mapSearchView.visibility = View.GONE
-//
-//
-//
-//        val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as SupportMapFragment
-//        childFragmentManager.beginTransaction().hide(mapFragment).commit()
+        mapSearchView = view.findViewById(R.id.map_search_view)
+
+        val selectLocationButton = view.findViewById<Button>(R.id.select_button)
+
+        selectLocationButton.visibility = View.GONE
+        mapSearchView.visibility = View.GONE
 
 
 
-//  ========================================== JANGAN DIHAPUS =========================================================      
-//        saveButton.setOnClickListener{
-//            val vendor = vendorInputField.text.toString().trim()
-//            val place = placeInputField.text.toString().trim()
-//            val type = typeInputField.text.toString().trim()
-//            val estimate = estimateInputField.text.toString().trim()
-//            val via = viaInputField.text.toString().trim()
-//            val desc = descinputField.text.toString().trim()
-//            val lat: Double = latLng!!.latitude
-//            val long: Double = latLng!!.longitude
-//
-//            if(userId.isNullOrEmpty()||vendor.isEmpty()||place.isEmpty()||type.isEmpty()||estimate.isEmpty()||via.isEmpty()||desc.isEmpty() || !latlngselected ||!imageAvailable){
-//                Toast.makeText(requireContext(), "All fields are required", Toast.LENGTH_SHORT).show()
-//            }else{
-////                GeoPoint(latLng!!.latitude, latLng!!.longitude)\
-//                val storageRef = storage.reference.child("vendor_images/${UUID.randomUUID()}.jpg")
-//                geoHash = GeoFireUtils.getGeoHashForLocation(GeoLocation(latLng!!.latitude, latLng!!.longitude))
-//
-//                val vendorData = HashMap<String, Any>()
-//                vendorData["vendor"] = vendor
-//                vendorData["place"] = place
-//                vendorData["type"] = type
-//                vendorData["estimate"] = estimate
-//                vendorData["via"] = via
-//                vendorData["desc"] = desc
-//                vendorData["lat"] = lat
-//                vendorData["long"] = long
-//                vendorData["lat_long"] = GeoPoint(latLng!!.latitude, latLng!!.longitude)
-//                vendorData["geohash"] = geoHash!!
-//
-//                if (imageAvailable){
-//                    if (imageSelected){
-//                        storageRef.putFile(imageUri)
-//                            .addOnSuccessListener {
-//                                storageRef.downloadUrl.addOnSuccessListener { uri ->
-//                                    vendorData["vendor_image"] = uri.toString()
-//                                    db.collection("vendors").document(userId).set(vendorData)
-//                                        .addOnSuccessListener {
-//                                            Toast.makeText(requireContext(), "Data saved", Toast.LENGTH_SHORT).show()
-//                                            findNavController().navigate(R.id.profileFragment)
-//                                        }
-//                                        .addOnFailureListener {
-//                                            Toast.makeText(requireContext(), "Data not saved", Toast.LENGTH_SHORT).show()
-//                                        }
-//                                }
-//                            }
-//                    }
-//                    else {
-//                        db.collection("vendors").document(userId).set(vendorData)
-//                            .addOnSuccessListener {
-//                                Toast.makeText(requireContext(), "Data saved", Toast.LENGTH_SHORT).show()
-//                                findNavController().navigate(R.id.profileFragment)
-//                            }
-//                            .addOnFailureListener {
-//                                Toast.makeText(requireContext(), "Data not saved", Toast.LENGTH_SHORT).show()
-//                            }
-//                    }
-//                }
-//            }
-//        }
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as SupportMapFragment
+        childFragmentManager.beginTransaction().hide(mapFragment).commit()
 
-//  ========================================== JANGAN DIHAPUS =========================================================
-//        searchMapButton.setOnClickListener {
-//            vendorInputField.visibility = View.GONE
-//            placeInputField.visibility = View.GONE
-//            typeInputField.visibility = View.GONE
-//            estimateInputField.visibility = View.GONE
-//            viaInputField.visibility = View.GONE
-//            descinputField.visibility = View.GONE
-//            searchMapButton.visibility = View.GONE
-//            latView.visibility = View.GONE
-//            longView.visibility = View.GONE
-//            saveButton.visibility = View.GONE
-//            vendorImage.visibility = View.GONE
-//
-//
-//            mapSearchView.visibility = View.VISIBLE
-//            childFragmentManager.beginTransaction().show(mapFragment).commit()
-//
-//
-//            mapSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//                override fun onQueryTextSubmit(query: String?): Boolean {
-//                    val location: String = mapSearchView.query.toString()
-//                    var addressList: List<Address> = emptyList()
-//                    mMap.clear()
-//
-//                    if(location.isNotEmpty()) {
-//                        geocoder = Geocoder(requireContext())
-//                        try {
-//                            addressList = geocoder.getFromLocationName(location, 1)!!
-//                        } catch (e: IOException) {
-//                            e.printStackTrace()
-//                        }
-//                        val address: Address = addressList[0]
-//                        latLng = LatLng(address.latitude, address.longitude)
-//                        mMap.addMarker(MarkerOptions().position(latLng!!).title(location))
-//                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng!!, 10.0F))
-//                        selectLocationButton.visibility = View.VISIBLE
-//                        selectLocationButton.setOnClickListener{
-//                            latView.text = address.latitude.toString()
-//                            longView.text = address.longitude.toString()
-//                            vendorInputField.visibility = View.VISIBLE
-//                            placeInputField.visibility = View.VISIBLE
-//                            typeInputField.visibility = View.VISIBLE
-//                            estimateInputField.visibility = View.VISIBLE
-//                            viaInputField.visibility = View.VISIBLE
-//                            descinputField.visibility = View.VISIBLE
-//                            searchMapButton.visibility = View.VISIBLE
-//                            latView.visibility = View.VISIBLE
-//                            longView.visibility = View.VISIBLE
-//                            saveButton.visibility = View.VISIBLE
-//                            vendorImage.visibility = View.VISIBLE
-//
-//                            mapSearchView.visibility = View.GONE
-//                            selectLocationButton.visibility = View.GONE
-//                            childFragmentManager.beginTransaction().hide(mapFragment).commit()
-//                            latlngselected = true
-//                        }
-//                    }
-//                    else{
-//                        Toast.makeText(requireContext(), "Location not found", Toast.LENGTH_SHORT).show()
-//                    }
-//
-//                    return false
-//                }
-//
-//                override fun onQueryTextChange(newText: String?): Boolean {
-//                    return false
-//                }
-//            })
-//            mapFragment.getMapAsync(this)
-//        }
-//  ========================================== JANGAN DIHAPUS =========================================================
+
+
+        saveButton.setOnClickListener{
+            val vendor = vendorInputField.text.toString().trim()
+            val place = placeInputField.text.toString().trim()
+            val type = typeInputField.text.toString().trim()
+            val estimate = estimateInputField.text.toString().trim()
+            val via = viaInputField.text.toString().trim()
+            val desc = descinputField.text.toString().trim()
+            val lat: Double = latLng!!.latitude
+            val long: Double = latLng!!.longitude
+
+            if(userId.isNullOrEmpty()||vendor.isEmpty()||place.isEmpty()||type.isEmpty()||estimate.isEmpty()||via.isEmpty()||desc.isEmpty() || !latlngselected ||!imageAvailable){
+                Toast.makeText(requireContext(), "All fields are required", Toast.LENGTH_SHORT).show()
+            }else{
+//                GeoPoint(latLng!!.latitude, latLng!!.longitude)\
+                val storageRef = storage.reference.child("vendor_images/${UUID.randomUUID()}.jpg")
+                geoHash = GeoFireUtils.getGeoHashForLocation(GeoLocation(latLng!!.latitude, latLng!!.longitude))
+
+                val vendorData = HashMap<String, Any>()
+                vendorData["vendor"] = vendor
+                vendorData["place"] = place
+                vendorData["type"] = type
+                vendorData["estimate"] = estimate
+                vendorData["via"] = via
+                vendorData["desc"] = desc
+                vendorData["lat"] = lat
+                vendorData["long"] = long
+                vendorData["lat_long"] = GeoPoint(latLng!!.latitude, latLng!!.longitude)
+                vendorData["geohash"] = geoHash!!
+
+                if (imageAvailable){
+                    if (imageSelected){
+                        storageRef.putFile(imageUri)
+                            .addOnSuccessListener {
+                                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                                    vendorData["vendor_image"] = uri.toString()
+                                    db.collection("vendors").document(userId).set(vendorData)
+                                        .addOnSuccessListener {
+                                            Toast.makeText(requireContext(), "Data saved", Toast.LENGTH_SHORT).show()
+                                            findNavController().navigate(R.id.profileFragment)
+                                        }
+                                        .addOnFailureListener {
+                                            Toast.makeText(requireContext(), "Data not saved", Toast.LENGTH_SHORT).show()
+                                        }
+                                }
+                            }
+                    }
+                    else {
+                        db.collection("vendors").document(userId).set(vendorData)
+                            .addOnSuccessListener {
+                                Toast.makeText(requireContext(), "Data saved", Toast.LENGTH_SHORT).show()
+                                findNavController().navigate(R.id.profileFragment)
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(requireContext(), "Data not saved", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
+            }
+        }
+
+        searchMapButton.setOnClickListener {
+            vendorInputField.visibility = View.GONE
+            placeInputField.visibility = View.GONE
+            typeInputField.visibility = View.GONE
+            estimateInputField.visibility = View.GONE
+            viaInputField.visibility = View.GONE
+            descinputField.visibility = View.GONE
+            searchMapButton.visibility = View.GONE
+            latView.visibility = View.GONE
+            longView.visibility = View.GONE
+            saveButton.visibility = View.GONE
+            latTextView.visibility = View.GONE
+            longTextView.visibility = View.GONE
+            buttonSelectImage.visibility = View.GONE
+            vendorImage.visibility = View.GONE
+
+
+            mapSearchView.visibility = View.VISIBLE
+            childFragmentManager.beginTransaction().show(mapFragment).commit()
+
+
+            mapSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    val location: String = mapSearchView.query.toString()
+                    var addressList: List<Address> = emptyList()
+                    mMap.clear()
+
+                    if(location.isNotEmpty()) {
+                        geocoder = Geocoder(requireContext())
+                        try {
+                            addressList = geocoder.getFromLocationName(location, 1)!!
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                        val address: Address = addressList[0]
+                        latLng = LatLng(address.latitude, address.longitude)
+                        mMap.addMarker(MarkerOptions().position(latLng!!).title(location))
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng!!, 10.0F))
+                        selectLocationButton.visibility = View.VISIBLE
+                        selectLocationButton.setOnClickListener{
+                            latView.text = address.latitude.toString()
+                            longView.text = address.longitude.toString()
+                            vendorInputField.visibility = View.VISIBLE
+                            placeInputField.visibility = View.VISIBLE
+                            typeInputField.visibility = View.VISIBLE
+                            estimateInputField.visibility = View.VISIBLE
+                            viaInputField.visibility = View.VISIBLE
+                            descinputField.visibility = View.VISIBLE
+                            searchMapButton.visibility = View.VISIBLE
+                            latView.visibility = View.VISIBLE
+                            longView.visibility = View.VISIBLE
+                            saveButton.visibility = View.VISIBLE
+                            vendorImage.visibility = View.VISIBLE
+                            latTextView.visibility = View.VISIBLE
+                            longTextView.visibility = View.VISIBLE
+                            buttonSelectImage.visibility = View.VISIBLE
+
+                            mapSearchView.visibility = View.GONE
+                            selectLocationButton.visibility = View.GONE
+                            childFragmentManager.beginTransaction().hide(mapFragment).commit()
+                            latlngselected = true
+                        }
+                    }
+                    else{
+                        Toast.makeText(requireContext(), "Location not found", Toast.LENGTH_SHORT).show()
+                    }
+
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
+            mapFragment.getMapAsync(this)
+        }
     }
 
 
