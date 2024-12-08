@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -93,13 +94,18 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
         val estimateInputField = view.findViewById<TextInputEditText>(R.id.estimate_input_field)
         val viaInputField = view.findViewById<TextInputEditText>(R.id.via_input_field)
         val descinputField = view.findViewById<TextInputEditText>(R.id.desc_input_field)
+//
         val searchMapButton = view.findViewById<Button>(R.id.search_map_button)
+//
         val saveButton = view.findViewById<Button>(R.id.save_button)
+        val latTextView = view.findViewById<TextView>(R.id.latitude)
+        val longTextView = view.findViewById<TextView>(R.id.longitude)
         val latView = view.findViewById<TextView>(R.id.latitude_view)
         val longView = view.findViewById<TextView>(R.id.longitude_view)
         val db = FirebaseFirestore.getInstance()
+        val buttonSelectImage = view.findViewById<Button>(R.id.btnVendorImage)
 
-        vendorImage.setOnClickListener{
+        buttonSelectImage.setOnClickListener{
             if (
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                 ContextCompat.checkSelfPermission(requireContext(), READ_MEDIA_IMAGES) != PERMISSION_GRANTED
@@ -111,7 +117,11 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-
+        // Back button listener
+        val backButton: ImageView = view.findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
         val userId = arguments?.getString("uid")
 
@@ -175,7 +185,6 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
 
 
 
-
         saveButton.setOnClickListener{
             val vendor = vendorInputField.text.toString().trim()
             val place = placeInputField.text.toString().trim()
@@ -236,7 +245,6 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-
         searchMapButton.setOnClickListener {
             vendorInputField.visibility = View.GONE
             placeInputField.visibility = View.GONE
@@ -248,6 +256,9 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
             latView.visibility = View.GONE
             longView.visibility = View.GONE
             saveButton.visibility = View.GONE
+            latTextView.visibility = View.GONE
+            longTextView.visibility = View.GONE
+            buttonSelectImage.visibility = View.GONE
             vendorImage.visibility = View.GONE
 
 
@@ -287,6 +298,9 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
                             longView.visibility = View.VISIBLE
                             saveButton.visibility = View.VISIBLE
                             vendorImage.visibility = View.VISIBLE
+                            latTextView.visibility = View.VISIBLE
+                            longTextView.visibility = View.VISIBLE
+                            buttonSelectImage.visibility = View.VISIBLE
 
                             mapSearchView.visibility = View.GONE
                             selectLocationButton.visibility = View.GONE
@@ -306,8 +320,8 @@ class EditVendorFragment : Fragment(), OnMapReadyCallback {
                 }
             })
             mapFragment.getMapAsync(this)
-            }
         }
+    }
 
 
 
