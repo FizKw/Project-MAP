@@ -10,11 +10,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-data class Article(
-    val title: String,
-    val description: String,
-    val imageRes: String
-)
 
 // Adapter untuk mengelola artikel
 class ArticleAdapter(private val articles: List<Article>) : RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
@@ -34,7 +29,7 @@ class ArticleAdapter(private val articles: List<Article>) : RecyclerView.Adapter
             val intent = Intent(context, ArticleDetailActivity::class.java).apply {
                 putExtra("ARTICLE_TITLE", article.title)
                 putExtra("ARTICLE_CONTENT", article.description)
-                putExtra("ARTICLE_IMAGE", article.imageRes)
+                putExtra("ARTICLE_IMAGE", article.articleImageRes)
             }
             context.startActivity(intent)
         }
@@ -47,7 +42,7 @@ class ArticleAdapter(private val articles: List<Article>) : RecyclerView.Adapter
             itemView.findViewById<TextView>(R.id.article_title).text = article.title
 //            itemView.findViewById<ImageView>(R.id.article_image).setImageResource(article.imageRes)
             Glide.with(itemView.context)
-                .load(article.imageRes)
+                .load(article.articleImageRes)
                 .into(itemView.findViewById(R.id.article_image))
         }
     }
