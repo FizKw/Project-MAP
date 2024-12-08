@@ -9,10 +9,6 @@
         android:icon="@drawable/ic_love"
         android:title="Wishlist" />
     <item
-        android:id="@+id/notificationFragment"
-        android:icon="@drawable/ic_notification"
-        android:title="Notification" />
-    <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_user"
         android:title="Profile" />
