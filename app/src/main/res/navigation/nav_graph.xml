@@ -172,4 +172,20 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.example.projekmap.PaymentFragment"
+        android:label="Payment"
+        tools:layout="@layout/fragment_payment">
+        <action
+            android:id="@+id/action_payment_to_success"
+            app:destination="@id/suksesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/suksesFragment"
+        android:name="com.example.projekmap.SuccessFragment"
+        android:label="Success"
+        tools:layout="@layout/fragment_sukses" />
+
 </navigation>
