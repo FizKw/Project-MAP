@@ -17,7 +17,7 @@ class PaymentFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_payment, container, false)
 
         // Tombol Next
-        val nextButton = view.findViewById<Button>(R.id.next)
+        val nextButton = view.findViewById<Button>(R.id.next_button)
         nextButton.setOnClickListener {
             navigateToFragment(SuksesFragment())
         }
