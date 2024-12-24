@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,6 +59,10 @@ class PlaceDetailActivity : AppCompatActivity() {
             finish() // Kembali ke aktivitas sebelumnya
         }
 
+        val checkOutButton = findViewById<Button>(R.id.btn_transaksi)
+        checkOutButton.setOnClickListener {
+            navigateToFragment(PaymentFragment())
+        }
         checkFavoriteStatus(favoriteButton)
 
         // Listener untuk tombol favorite
@@ -96,6 +101,13 @@ class PlaceDetailActivity : AppCompatActivity() {
         rateButton.setOnClickListener {
             showRatingDialog()
         }
+    }
+
+    private fun navigateToFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(android.R.id.content, fragment) // Ganti layout utama dengan fragment
+            .addToBackStack(null) // Tambahkan ke back stack agar bisa kembali
+            .commit()
     }
 
     private fun checkFavoriteStatus(favoriteButton: ImageView) {
@@ -195,4 +207,6 @@ class PlaceDetailActivity : AppCompatActivity() {
         // Tampilkan dialog
         dialog.show()
     }
+
+
 }

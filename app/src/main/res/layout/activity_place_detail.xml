@@ -75,6 +75,55 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Pilihan Paket -->
+
+    <LinearLayout
+        android:id="@+id/package_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="196dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/place_location">
+
+        <TextView
+            android:id="@+id/text_choose_package"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity=""
+            android:layout_marginBottom="8dp"
+            android:text="Pilih Paket"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_package"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_package_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paket A" />
+
+            <RadioButton
+                android:id="@+id/radio_package_b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paket B" />
+
+            <RadioButton
+                android:id="@+id/radio_package_c"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paket C" />
+        </RadioGroup>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/place_description"
@@ -92,12 +141,25 @@
         android:id="@+id/btn_rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="148dp"
         android:backgroundTint="@android:color/holo_blue_dark"
         android:text="Rate This Place"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/place_description" />
+
+    <Button
+        android:id="@+id/btn_transaksi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="148dp"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:text="Check Out"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/place_description" />
 
