@@ -184,7 +184,7 @@
 
     <fragment
         android:id="@+id/suksesFragment"
-        android:name="com.example.projekmap.SuccessFragment"
+        android:name="com.example.projekmap.SuksesFragment"
         android:label="Success"
         tools:layout="@layout/fragment_sukses" />
 
